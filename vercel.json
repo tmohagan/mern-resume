@@ -7,12 +7,6 @@
         "use": "@vercel/node"
       }
     ],
-    "env": {
-      "MONGO_URL": "@mongo_url",
-      "API_PORT": "@api_port",
-      "S3_ACCESS_KEY": "@s3_access_key",
-      "S3_SECRET_ACCESS_KEY": "@s3_secret_access_key"
-    },
     "rewrites": [
       {
         "source": "/(.*)",
