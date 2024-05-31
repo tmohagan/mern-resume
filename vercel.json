@@ -7,16 +7,6 @@
         "use": "@vercel/node"
       }
     ],
-    "routes": [
-      {
-        "src": "/post",
-        "dest": "index.js"
-      },
-      {
-        "src": "/post/(.*)",
-        "dest": "index.js"
-      }
-    ],
     "env": {
       "MONGO_URL": "@mongo_url",
       "API_PORT": "@api_port",
