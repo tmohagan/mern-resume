@@ -11,4 +11,3 @@ client/.env
 .vscode/
 
 # Misc
-api/uploads/*
