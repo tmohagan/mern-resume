@@ -1,0 +1,32 @@
+{
+    "version": 2,
+    "name": "ohagan-mern-app",
+    "builds": [
+      {
+        "src": "index.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/post",
+        "dest": "index.js"
+      },
+      {
+        "src": "/post/(.*)",
+        "dest": "index.js"
+      }
+    ],
+    "env": {
+      "MONGO_URL": "@mongo_url",
+      "API_PORT": "@api_port",
+      "S3_ACCESS_KEY": "@s3_access_key",
+      "S3_SECRET_ACCESS_KEY": "@s3_secret_access_key"
+    },
+    "rewrites": [
+      {
+        "source": "/(.*)",
+        "destination": "/index.js"
+      }
+    ]
+  }
