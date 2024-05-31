@@ -9,3 +9,6 @@ client/.env
 
 # Ignore IDE configuration files
 .vscode/
+
+# Misc
+api/uploads/*
