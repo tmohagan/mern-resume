@@ -7,11 +7,17 @@ export default function Header() {
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/profile`, {
       credentials: 'include',
-    }).then(response => {
-      response.json().then(userInfo => {
-        setUserInfo(userInfo);
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Could not fetch user profile.');
+        }
+        return response.json();
+      })
+      .then(setUserInfo)
+      .catch(error => {
+        console.error(error); 
       });
-    });
   }, [setUserInfo]);
 
   function logout() {
