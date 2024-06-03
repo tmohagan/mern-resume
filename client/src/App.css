@@ -34,6 +34,14 @@ header nav{
     display:flex;
     gap: 24px;
 }
+header button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    color: blue; /* Or your preferred link color */
+  }
 
 div.post{
     display: grid;
@@ -63,7 +71,7 @@ div.post p.info{
     display: flex;
     gap: 10px;
 }
-div.post p.info a.author{
+div.post p.info span.author{
     color:#333;
 }
 div.post p.summary{
