@@ -1,12 +1,14 @@
 {
     "version": 2,
-    "builds": [
+    "routes": [
       {
-        "src": "index.js",
-        "use": "@vercel/node"
+        "src": "/(.*)",
+        "dest": "/index.js"
       }
     ],
-    "routes": [
-      { "src": "/(.*)", "dest": "index.js" } 
-    ]
+    "env": {
+      "DB_CONNECTION_STRING": "@db_connection_string",
+      "JWT_SECRET": "@jwt_secret",
+      "S3_BUCKET": "@s3_bucket"
+    }
   }
