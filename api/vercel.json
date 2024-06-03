@@ -5,10 +5,5 @@
         "src": "/(.*)",
         "dest": "/index.js"
       }
-    ],
-    "env": {
-      "MONGO_URL": "@mongo_url",
-      "S3_ACCESS_KEY": "@s3_access_key",
-      "S3_SECRET_ACCESS_KEY": "@s3_secret_access_key"
-    }
+    ]
   }
