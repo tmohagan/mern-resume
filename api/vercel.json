@@ -7,8 +7,8 @@
       }
     ],
     "env": {
-      "DB_CONNECTION_STRING": "@db_connection_string",
-      "JWT_SECRET": "@jwt_secret",
-      "S3_BUCKET": "@s3_bucket"
+      "MONGO_URL": "@mongo_url",
+      "S3_ACCESS_KEY": "@s3_access_key",
+      "S3_SECRET_ACCESS_KEY": "@s3_secret_access_key"
     }
   }
