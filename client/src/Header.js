@@ -29,6 +29,7 @@ export default function Header() {
       method: 'POST',
     });
     setUserInfo(null);
+    localStorage.removeItem('token');
   }
 
   const username = userInfo?.username;
