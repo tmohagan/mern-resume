@@ -137,7 +137,10 @@ app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
 
   const {token} = req.cookies;
   jwt.verify(token, secret, {}, async (err,info) => {
-    if (err) throw err;
+    if (err) {
+      console.error('THIS IS WHERE THE ERROR IS: ', err);
+      throw err;
+    }
     const {title,summary,content} = req.body;
     const postDoc = await Post.create({
       title,
