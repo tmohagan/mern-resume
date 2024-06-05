@@ -1,4 +1,5 @@
 import {useState} from "react";
+import {Navigate} from "react-router-dom";
 
 export default function RegisterPage() {
   const [username, setUsername] = useState('');
