@@ -9,29 +9,38 @@ export default function CreatePost() {
   const [content,setContent] = useState('');
   const [files, setFiles] = useState('');
   const [redirect, setRedirect] = useState(false);
+  
   async function createNewPost(ev) {
-    const data = new FormData();
-    data.set('title', title);
-    data.set('summary', summary);
-    data.set('content', content);
-    data.set('file', files[0]);
     ev.preventDefault();
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/post`, {
-      method: 'POST',
-      body: data,
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'multipart/form-data' 
-      },
-    });
-    if (response.ok) {
-      setRedirect(true);
+
+    try {
+      const data = new FormData();
+      data.set('title', title);
+      data.set('summary', summary);
+      data.set('content', content);
+      data.set('file', files[0]);
+
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/post`, {
+        method: 'POST',
+        body: data,
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'multipart/form-data' 
+        },
+      });
+
+      if (response.ok) {
+        setRedirect(true);
+      } else {
+        // Log the error to the console if the response is not ok
+        console.error('AAA - Error creating post:', response.statusText); 
+      }
+    } catch (error) {
+      // Log any network or other errors
+      console.error('BBB - Error creating post:', error);
     }
   }
 
-  if (redirect) {
-    return <Navigate to={'/'} />
-  }
   return (
     <form onSubmit={createNewPost}>
       <input type="title"
