@@ -38,6 +38,10 @@ export default function CreatePost() {
     }
   }
 
+  if (redirect) {
+    return <Navigate to={'/'} />
+  }
+  
   return (
     <form onSubmit={createNewPost}>
       <input type="title"
