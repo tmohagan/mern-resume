@@ -21,10 +21,9 @@ const bucket = 'ohagan-mern-blog';
 
 app.options('*', cors()); // Handle OPTIONS requests first
 
-// origin: 'https://mern-blog-client-smoky.vercel.app',
 app.use(cors({
   credentials: true,
-  origin: '*',
+  origin: 'https://mern-blog-client-smoky.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
