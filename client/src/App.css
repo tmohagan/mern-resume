@@ -10,6 +10,12 @@ body{
 img{
     max-width: 100%;
 }
+error-message{
+    color: red;
+    font-size: 1rem;
+    margin: 10px 0;
+    display: block;
+}
 main{
     padding: 10px;
     max-width: 960px;

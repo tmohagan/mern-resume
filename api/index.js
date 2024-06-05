@@ -55,18 +55,23 @@ app.get('/test', (req,res) => {
 }
 );
 
-app.post('/register', async (req,res) => {
+app.post('/register', async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
-  const {username,password} = req.body;
-  try{
+
+  const { username, password, confirmPassword } = req.body;
+  
+  if (password !== confirmPassword) {
+    return res.status(400).json({ error: 'Passwords do not match' });
+  }
+
+  try {
     const userDoc = await User.create({
       username,
-      password:bcrypt.hashSync(password,salt),
+      password: bcrypt.hashSync(password, salt),
     });
     res.json(userDoc);
-  } catch(e) {
-    console.log(e);
-    res.status(400).json(e);
+  } catch (e) {
+    res.status(400).json({ error: 'Registration failed', details: e.message });
   }
 });
 
