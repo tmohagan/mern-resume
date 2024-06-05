@@ -17,6 +17,9 @@ export default function Header() {
       .then(setUserInfo)
       .catch(error => {
         console.error(error); 
+        if (error.message.includes('Unauthorized')) {
+          setUserInfo(null); // Clear userInfo if unauthorized
+        } 
       });
   }, [setUserInfo]);
 

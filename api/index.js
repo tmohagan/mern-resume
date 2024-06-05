@@ -18,21 +18,15 @@ const salt = bcrypt.genSaltSync(10);
 const secret = 'asdfe45we45w345wegw345werjktjwertkj';
 const bucket = 'ohagan-mern-blog';
 
-/*
+
 app.use(cors({
   credentials: true,
   origin: 'https://mern-blog-client-smoky.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
-*/
-app.use(cors({
-  credentials: true,
-  origin: 'https://mern-blog-client-smoky.vercel.app',
-}));
-
 app.options('*', cors());
-// app.use(cors({credentials:true,origin:'http://localhost:3000'}));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
@@ -78,29 +72,56 @@ app.post('/register', async (req,res) => {
   }
 });
 
-app.post('/login', async (req,res) => {
-  mongoose.connect(process.env.MONGO_URL);
-  const {username,password} = req.body;
-  const userDoc = await User.findOne({username});
-  const passOk = bcrypt.compareSync(password, userDoc.password);
-  if (passOk) {
-    // logged in
-    jwt.sign({username,id:userDoc._id}, secret, {}, (err,token) => {
-      if (err) throw err;
-      res.cookie('token', token).json({
-        id:userDoc._id,
-        username,
+app.post('/login', async (req, res) => {
+  try {
+    await mongoose.connect(process.env.MONGO_URL); // Await connection for better error handling
+    const { username, password } = req.body;
+    const userDoc = await User.findOne({ username });
+
+    if (!userDoc) {
+      return res.status(400).json('Wrong credentials'); // User not found
+    }
+
+    const passOk = bcrypt.compareSync(password, userDoc.password);
+
+    if (passOk) {
+      jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
+        if (err) throw err;
+
+        // Secure Cookie Settings:
+        const cookieOptions = {
+          httpOnly: true,           // Prevents client-side JavaScript access
+          sameSite: 'none',        // Stricter for cross-site requests (adjust if not needed)
+          secure: true,             // Send only over HTTPS
+          maxAge: 24 * 60 * 60 * 1000, // 1 day (adjust as needed)
+          // domain: 'your-domain.com', // Optional, if your frontend and backend share a domain
+          // path: '/',             // Optional, path on which the cookie is accessible
+        };
+
+        res.cookie('token', token, cookieOptions).json({
+          id: userDoc._id,
+          username,
+        });
       });
-    });
-  } else {
-    res.status(400).json('wrong credentials');
+    } else {
+      res.status(400).json('Wrong credentials');
+    }
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-app.get('/profile', (req,res) => {
-  const {token} = req.cookies;
-  jwt.verify(token, secret, {}, (err,info) => {
-    if (err) throw err;
+app.get('/profile', (req, res) => {
+  const { token } = req.cookies;
+  if (!token) { // Check if token exists
+    return res.status(401).json({ error: 'Unauthorized - No Token' }); // No token, send 401
+  }
+  jwt.verify(token, secret, {}, (err, info) => {
+    if (err) {
+      console.error('Unauthorized - Error verifying token:', err);
+      return res.status(401).json({ error: 'Invalid Token' }); // Invalid token, send 401
+    }
     res.json(info);
   });
 });
