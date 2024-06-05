@@ -19,6 +19,13 @@ const secret = 'asdfe45we45w345wegw345werjktjwertkj';
 const bucket = 'ohagan-mern-blog';
 
 
+const corsOptions = {
+  origin: 'https://mern-blog-client-smoky.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+};
+
 app.options('/login', cors(corsOptions)); 
 app.options('/profile', cors(corsOptions));
 app.options('/register', cors(corsOptions));
@@ -26,14 +33,6 @@ app.options('/test', cors(corsOptions));
 app.options('/logout', cors(corsOptions));
 app.options('/post', cors(corsOptions));
 app.options('/post/:id', cors(corsOptions));
-
-app.use(cors({
-  credentials: true,
-  origin: 'https://mern-blog-client-smoky.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
 
 app.use(express.json());
 app.use(cookieParser());
