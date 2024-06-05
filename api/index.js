@@ -19,11 +19,11 @@ const secret = 'asdfe45we45w345wegw345werjktjwertkj';
 const bucket = 'ohagan-mern-blog';
 
 const corsOptions = {
-  origin: 'https://mern-blog-client-smoky.vercel.app',  // Your frontend's origin
-  credentials: true,                                    // Allow credentials (cookies, etc.)
+  origin: 'https://mern-blog-client-smoky.vercel.app', 
+  credentials: true,                                    
 };
 
-app.use(cors(corsOptions));  // Apply CORS to ALL routes
+app.use(cors(corsOptions)); 
 
 app.use(express.json());
 app.use(cookieParser());
@@ -72,7 +72,7 @@ app.post('/register', async (req,res) => {
 
 app.post('/login', async (req, res) => {
   try {
-    await mongoose.connect(process.env.MONGO_URL); // Await connection for better error handling
+    await mongoose.connect(process.env.MONGO_URL); 
     const { username, password } = req.body;
     const userDoc = await User.findOne({ username });
 
@@ -86,14 +86,11 @@ app.post('/login', async (req, res) => {
       jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
         if (err) throw err;
 
-        // Secure Cookie Settings:
         const cookieOptions = {
-          httpOnly: true,           // Prevents client-side JavaScript access
-          sameSite: 'none',        // Stricter for cross-site requests (adjust if not needed)
-          secure: true,             // Send only over HTTPS
-          maxAge: 24 * 60 * 60 * 1000, // 1 day (adjust as needed)
-          // domain: 'your-domain.com', // Optional, if your frontend and backend share a domain
-          // path: '/',             // Optional, path on which the cookie is accessible
+          httpOnly: true,
+          sameSite: 'none',
+          secure: true,
+          maxAge: 24 * 60 * 60 * 1000,
         };
 
         res.cookie('token', token, cookieOptions).json({
@@ -112,13 +109,13 @@ app.post('/login', async (req, res) => {
 
 app.get('/profile', (req, res) => {
   const { token } = req.cookies;
-  if (!token) { // Check if token exists
-    return res.status(401).json({ error: 'Unauthorized - No Token' }); // No token, send 401
+  if (!token) {
+    return res.status(401).json({ error: 'Unauthorized - No Token' });
   }
   jwt.verify(token, secret, {}, (err, info) => {
     if (err) {
       console.error('Unauthorized - Error verifying token:', err);
-      return res.status(401).json({ error: 'Invalid Token' }); // Invalid token, send 401
+      return res.status(401).json({ error: 'Invalid Token' });
     }
     res.json(info);
   });

@@ -27,7 +27,7 @@ export default function Header() {
     };
 
     fetchProfile();
-  }, []); // Empty dependency array ensures it runs only once after initial render
+  }, []); 
 
   function logout() {
     fetch(`${process.env.REACT_APP_API_URL}/logout`, {

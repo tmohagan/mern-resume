@@ -29,19 +29,17 @@ export default function CreatePost() {
       if (response.ok) {
         setRedirect(true);
       } else {
-        // Log the error to the console if the response is not ok
-        console.error('AAA - Error creating post:', response.statusText); 
+        console.error('Error creating post:', response.statusText); 
       }
     } catch (error) {
-      // Log any network or other errors
-      console.error('BBB - Error creating post:', error);
+      console.error('Error creating post:', error);
     }
   }
 
   if (redirect) {
     return <Navigate to={'/'} />
   }
-  
+
   return (
     <form onSubmit={createNewPost}>
       <input type="title"
