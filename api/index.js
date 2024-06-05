@@ -18,21 +18,12 @@ const salt = bcrypt.genSaltSync(10);
 const secret = 'asdfe45we45w345wegw345werjktjwertkj';
 const bucket = 'ohagan-mern-blog';
 
-
 const corsOptions = {
-  origin: 'https://mern-blog-client-smoky.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
+  origin: 'https://mern-blog-client-smoky.vercel.app',  // Your frontend's origin
+  credentials: true,                                    // Allow credentials (cookies, etc.)
 };
 
-app.options('/login', cors(corsOptions)); 
-app.options('/profile', cors(corsOptions));
-app.options('/register', cors(corsOptions));
-app.options('/test', cors(corsOptions));
-app.options('/logout', cors(corsOptions));
-app.options('/post', cors(corsOptions));
-app.options('/post/:id', cors(corsOptions));
+app.use(cors(corsOptions));  // Apply CORS to ALL routes
 
 app.use(express.json());
 app.use(cookieParser());
