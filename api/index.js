@@ -127,13 +127,18 @@ app.post('/logout', (req,res) => {
 
 app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
   mongoose.connect(process.env.MONGO_URL);
-  const {originalname, path, mimetype} = req.file;
-  const imageUrl = await uploadToS3(path, originalname, mimetype);
+
+  let imageUrl = null;
+
+  if (req.file) {
+    const { originalname, path, mimetype } = req.file;
+    imageUrl = await uploadToS3(path, originalname, mimetype);
+  }
+
 
   const {token} = req.cookies;
   jwt.verify(token, secret, {}, async (err,info) => {
     if (err) {
-      console.error('THIS IS WHERE THE ERROR IS: ', err);
       throw err;
     }
     const {title,summary,content} = req.body;

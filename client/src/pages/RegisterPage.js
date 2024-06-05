@@ -3,6 +3,7 @@ import {useState} from "react";
 export default function RegisterPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [redirect,setRedirect] = useState(false);
   async function register(ev) {
     ev.preventDefault();
     const response = await fetch(`${process.env.REACT_APP_API_URL}/register`, {
@@ -12,10 +13,16 @@ export default function RegisterPage() {
     });
     if (response.status === 200) {
       alert('registration successful');
+      setRedirect(true);
     } else {
       alert('registration failed');
     }
   }
+
+  if (redirect) {
+    return <Navigate to={'/login'} />
+  }
+  
   return (
     <form className="register" onSubmit={register}>
       <h1>register</h1>

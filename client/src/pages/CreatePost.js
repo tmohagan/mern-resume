@@ -18,7 +18,9 @@ export default function CreatePost() {
       data.set('title', title);
       data.set('summary', summary);
       data.set('content', content);
-      data.set('file', files[0]);
+      if (files.length > 0) {
+        data.set('file', files[0]);
+      }
 
       const response = await fetch(`${process.env.REACT_APP_API_URL}/post`, {
         method: 'POST',
