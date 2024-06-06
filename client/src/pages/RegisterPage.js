@@ -13,6 +13,7 @@ export default function RegisterPage() {
     
     if (password !== confirmPassword) {
       setErrorMessage('passwords do not match');
+      return;
     }
 
     try {
