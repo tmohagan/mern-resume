@@ -29,6 +29,11 @@ img{
     background-color: #f8f9fa; /* Light background for header */
     padding: 15px 20px;       /* Add padding to the header */
     border-bottom: 1px solid #dee2e6; /* Add a subtle bottom border */
+    display:flex;
+    justify-content:space-between;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    align-items: center;
   }
 header a{
     text-decoration:none;
