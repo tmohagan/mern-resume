@@ -5,13 +5,13 @@ import Image from "./Image.jsx";
 export default function Post({ _id, title, summary, cover, createdAt, author }) {
   return (
     <div className="post">
-      {cover && ( 
-        <div className="image">
+      <div className="image">
+        {cover && ( 
           <Link to={`/post/${_id}`}>
             <Image src={cover} alt="" />
           </Link>
-        </div>
-      )}
+        )}
+      </div>
       <div className="texts">
         <Link to={`/post/${_id}`}>
           <h2>{title}</h2>

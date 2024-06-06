@@ -10,7 +10,7 @@ body{
 img{
     max-width: 100%;
 }
-error-message{
+.error-message{
     color: red;
     font-size: 1rem;
     margin: 10px 0;
@@ -59,11 +59,13 @@ div.post{
     margin-bottom: 30px;
 }
 @media screen and (min-width: 700px) {
-    div.post{
-        grid-template-columns: .9fr 1.1fr;
+    div.post {
+      grid-template-columns: 150px 1fr;
     }
+  }
+div.post div.image {
+    min-height: 150px;
 }
-
 div.post div.texts h2{
     margin:0;
     font-size: 2rem;
