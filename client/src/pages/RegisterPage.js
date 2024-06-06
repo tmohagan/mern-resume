@@ -18,7 +18,7 @@ export default function RegisterPage() {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/register`, {
         method: 'POST',
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, confirmPassword }),
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -30,7 +30,7 @@ export default function RegisterPage() {
         setErrorMessage(errorData.details || 'registration failed');
       }
     } catch (error) {
-      console.error('Error registering:', error);
+      console.log('Error registering:', error);
       setErrorMessage('an error occurred during registration');
     }
   }
