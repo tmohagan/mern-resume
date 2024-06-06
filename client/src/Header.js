@@ -42,7 +42,6 @@ export default function Header() {
   return (
     <header>
       <Link to="/" className="logo">tim-ohagan.com</Link>
-      <br />
       <nav>
         {username && (
           <>
