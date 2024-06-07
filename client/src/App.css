@@ -34,7 +34,7 @@ img{
     justify-content:space-between;
     margin-top: 20px;
     margin-bottom: 50px;
-    align-items: center;
+    align-items: stretch;
   }
 header a{
     text-decoration:none;
@@ -43,10 +43,12 @@ header a{
 header a.logo{
     font-weight: bold;
     font-size: 1.8rem;
+    text-align: left;
 }
 header nav{
     display:flex;
     gap: 20px;
+    justify-content: flex-end;
 }
 header button {
     background: none;
