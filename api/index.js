@@ -18,9 +18,21 @@ const salt = bcrypt.genSaltSync(10);
 const secret = 'asdfe45we45w345wegw345werjktjwertkj';
 const bucket = 'ohagan-mern-blog';
 
+const allowedOrigins = [
+  'https://mern-blog-client-smoky.vercel.app',
+  'http://localhost:3000' // Add this if you need local development
+];
+
 const corsOptions = {
-  origin: 'https://mern-blog-client-smoky.vercel.app', 
-  credentials: true,                                    
+  origin: (origin, callback) => {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // Important for sending cookies/authentication
+  optionsSuccessStatus: 200 // Some legacy browsers need this
 };
 
 app.use(cors(corsOptions)); 
