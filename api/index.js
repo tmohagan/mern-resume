@@ -20,7 +20,7 @@ const bucket = 'ohagan-mern-blog';
 
 const allowedOrigins = [
   'https://mern-blog-client-smoky.vercel.app',
-  'http://localhost:3000' // Add this if you need local development
+  'http://localhost:3000'
 ];
 
 const corsOptions = {
@@ -31,8 +31,8 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true, // Important for sending cookies/authentication
-  optionsSuccessStatus: 200 // Some legacy browsers need this
+  credentials: true,
+  optionsSuccessStatus: 200
 };
 
 app.use(cors(corsOptions)); 
