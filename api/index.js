@@ -3,6 +3,7 @@ const cors = require('cors');
 const mongoose = require("mongoose");
 const User = require('./models/User');
 const Post = require('./models/Post');
+const Project = require('./models/Project');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
@@ -142,6 +143,10 @@ app.post('/logout', (req,res) => {
   res.cookie('token', '').json('ok');
 });
 
+app.post('/contact', (req,res) => {
+  res.json('ok');
+});
+
 app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
   mongoose.connect(process.env.MONGO_URL);
 
@@ -214,6 +219,80 @@ app.get('/post/:id', async (req, res) => {
   const {id} = req.params;
   const postDoc = await Post.findById(id).populate('author', ['username']);
   res.json(postDoc);
+})
+
+app.post('/project', uploadMiddleware.single('file'), async (req,res) => {
+  mongoose.connect(process.env.MONGO_URL);
+
+  let imageUrl = null;
+
+  if (req.file) {
+    const { originalname, path, mimetype } = req.file;
+    imageUrl = await uploadToS3(path, originalname, mimetype);
+  }
+
+
+  const {token} = req.cookies;
+  jwt.verify(token, secret, {}, async (err,info) => {
+    if (err) {
+      throw err;
+    }
+    const {title,summary,content} = req.body;
+    const projectDoc = await Project.create({
+      title,
+      summary,
+      content,
+      cover:imageUrl,
+      author:info.id,
+    });
+    res.json(projectDoc);
+  });
+});
+
+app.put('/project',uploadMiddleware.single('file'), async (req,res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  let imageUrl = null;
+  if (req.file) {
+    const {originalname, path, mimetype} = req.file;
+    imageUrl = await uploadToS3(path, originalname, mimetype);
+  }
+
+  const {token} = req.cookies;
+  jwt.verify(token, secret, {}, async (err,info) => {
+    if (err) throw err;
+    const {id,title,summary,content} = req.body;
+    const projectDoc = await Project.findById(id);
+    const isAuthor = JSON.stringify(projectDoc.author) === JSON.stringify(info.id);
+    if (!isAuthor) {
+      return res.status(400).json('you are not the author');
+    }
+    await projectDoc.updateOne({
+      title,
+      summary,
+      content,
+      cover: imageUrl ? imageUrl : projectDoc.cover,
+    });
+
+    res.json(projectDoc);
+  });
+
+});
+
+app.get('/project', async (req,res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  res.json(
+    await Project.find()
+      .populate('author', ['username'])
+      .sort({createdAt: -1})
+      .limit(20)
+  );
+});
+
+app.get('/project/:id', async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  const {id} = req.params;
+  const projectDoc = await Project.findById(id).populate('author', ['username']);
+  res.json(projectDoc);
 })
 
 if (process.env.API_PORT) {

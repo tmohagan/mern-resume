@@ -3,6 +3,8 @@
 }
 a{
     cursor: pointer;
+    text-decoration: none; /* Remove default underline */
+    color: inherit;        /* Inherit color from parent */
 }
 body {
     font-family: sans-serif; /* Add a default font for readability */
@@ -27,7 +29,7 @@ img{
   }
   header {
     background-color: #f8f9fa; /* Light background for header */
-    padding: 15px 20px;       /* Add padding to the header */
+    padding: 1rem 2rem;       /* Add padding to the header */
     border-bottom: 1px solid #dee2e6; /* Add a subtle bottom border */
     display:flex;
     flex-direction: column;
@@ -42,14 +44,15 @@ header a{
 }
 header a.logo{
     font-weight: bold;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     text-align: left;
 }
 header nav{
     display:flex;
-    gap: 20px;
+    gap: 1rem;
     justify-content: flex-end;
 }
+
 header button {
     background: none;
     border: none;
@@ -59,9 +62,49 @@ header button {
     color: inherit;
     text-decoration: none;
 }
+
 header button:hover {
     text-decoration: underline; 
 }
+header div.dropdown {
+    position: relative;
+}
+header div.dropdown-menu {
+    display: none; /* Hidden by default */
+    position: absolute;
+    background-color: #fff;
+    min-width: 10rem; /* Set a minimum width for the dropdown */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  }
+  
+header div.dropdown.active .dropdown-menu {
+    display: block; /* Show when the dropdown is active */
+  }
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .link-button {
+    background: none;   /* No background */
+    border: none;       /* No border */
+    padding: 0;        /* No padding */
+    cursor: pointer;
+    font: inherit;     /* Inherit font from parent */
+    color: inherit;    /* Inherit color from parent */
+    text-align: left;  /* Align text to the left */
+    text-decoration: none; /* Remove default underline */
+  }
+  
+  .link-button:hover {
+    text-decoration: underline; /* Add underline on hover */
+  }
+  
 div.post{
     display: grid;
     grid-template-columns: 1fr;
@@ -108,7 +151,7 @@ div.post p.summary{
     line-height: 1.8rem;
 }
 
-form.login, form.register{
+form.login, form.register, form.contact{
     max-width: 400px;
     margin: 0 auto;
 }
@@ -131,7 +174,7 @@ button{
     border-radius: 5px;
     padding: 7px 0;
 }
-form.login h1, form.register h1{
+form.login h1, form.register h1, form.contact h1{
     text-align: center;
 }
 
@@ -187,6 +230,10 @@ div.post-page a.edit-btn{
     border-radius: 5px;
     text-decoration: none;
 }
+div.post-page a.edit-btn:first-child {
+    margin-right: 20px;
+}
+
 a svg{
     height:20px;
 }
