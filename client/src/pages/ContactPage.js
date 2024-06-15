@@ -38,7 +38,7 @@ export default function ContactPage() {
 
   return (
     <form className="contact" onSubmit={handleSubmit}>
-      <h1>contact Me</h1>
+      <h1>contact me</h1>
       <input
         type="text"
         placeholder="your name"
@@ -54,6 +54,7 @@ export default function ContactPage() {
         required
       />
       <textarea
+        className="message-input"
         placeholder="your message"
         value={message}
         onChange={(ev) => setMessage(ev.target.value)}

@@ -1,69 +1,73 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { UserContext } from "../UserContext";
 
 export default function AccountPage() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
   const [redirect, setRedirect] = useState(false);
+  const { userInfo } = useContext(UserContext);
+  const [name, setName] = useState(userInfo?.name || "");
 
-  async function register(ev) {
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (userInfo?.id) {
+        try {
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/user/${userInfo.id}`);
+          if (response.ok) {
+            const data = await response.json();
+            setName(data.name);
+          } else {
+            console.error("Error fetching user data:", response.status, response.statusText);
+          }
+        } catch (error) {
+          console.error("Error fetching user:", error);
+        }
+      }
+    };
+    fetchUserData();
+  }, [userInfo]);
+
+  async function updateProfile(ev) {
     ev.preventDefault();
     
-    if (password !== confirmPassword) {
-      setErrorMessage('passwords do not match');
-      return;
-    }
-
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/register`, {
-        method: 'POST',
-        body: JSON.stringify({ username, password, confirmPassword }),
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/user`, {
+        method: "PUT",
+        body: JSON.stringify({
+          name,
+          id: userInfo.id.toString(),
+        }),
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
       });
 
       if (response.ok) {
-        alert('registration successful');
         setRedirect(true);
       } else {
-        const errorData = await response.json();
-        setErrorMessage(errorData.details || 'registration failed');
+        console.error("Error updating profile:", response.status, response.statusText);
       }
     } catch (error) {
-      console.log('Error registering:', error);
-      setErrorMessage('an error occurred during registration');
-    }
+      console.error("Error updating profile:", error);
+    } 
   }
 
   if (redirect) {
-    return <Navigate to={'/login'} />;
+    return <Navigate to="/" />;
   }
 
   return (
-    <form className="register" onSubmit={null}>
-      <h1>my account</h1>
-
-      <input type="text"
-             placeholder="username"
-             value={username}
-             onChange={ev => setUsername(ev.target.value)}/>
-      <input 
-        type="password"
-        placeholder="password"
-        value={password}
-        onChange={(ev) => setPassword(ev.target.value)} 
+    <form onSubmit={updateProfile}>
+      <h1>{userInfo?.username} profile</h1>
+      <label htmlFor="nameInput">Full Name:</label>
+      <input
+        type="text"
+        id="nameInput"
+        placeholder="Name"
+        value={name}
+        onChange={(ev) => setName(ev.target.value)}
       />
-      <input 
-        type="password"
-        placeholder="confirm password"
-        value={confirmPassword}
-        onChange={(ev) => setConfirmPassword(ev.target.value)} 
-      />
-
-      {errorMessage && <div className="error-message">{errorMessage}</div>} 
-
-      <button type="submit">nothing</button>
+      <button type="submit" style={{ marginTop: "5px" }}>
+        update profile
+      </button>
     </form>
   );
 }

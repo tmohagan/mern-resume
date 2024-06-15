@@ -17,6 +17,7 @@ export default function Header() {
     setActiveDropdown(null);
   };
 
+
   useEffect(() => {
     if (username) { 
       fetch(`${process.env.REACT_APP_API_URL}/profile`, { credentials: "include" })

@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require("mongoose");
+const { ObjectId } = require('mongoose').Types;
 const User = require('./models/User');
 const Post = require('./models/Post');
 const Project = require('./models/Project');
@@ -137,6 +138,58 @@ app.get('/profile', (req, res) => {
     }
     res.json(info);
   });
+});
+
+app.get('/user/:id', async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  const {id} = req.params;
+  const userDoc = await User.findById(id);
+  res.json(userDoc);
+})
+
+
+app.put('/user', async (req, res) => {
+  try {
+    mongoose.connect(process.env.MONGO_URL);
+
+    const { token } = req.cookies;
+
+    jwt.verify(token, secret, {}, async (err, info) => {
+      if (err) {
+        return res.status(403).json({ error: 'Invalid token' });
+      }
+
+      const { id, name } = req.body;
+
+      if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ error: 'Invalid user ID' });
+      }
+
+      const userDoc = await User.findById(id);
+      if (!userDoc) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      if (userDoc._id.toString() !== info.id) {
+        return res.status(403).json({ error: 'Unauthorized to update this user' });
+      }
+
+      const updateFields = { name };
+      if (name) userDoc.name = name;
+
+      await userDoc.save();
+
+      res.json(userDoc);
+    });
+  } catch (error) {
+    console.error('Error updating user:', error);
+
+    if (error.name === 'CastError' && error.kind === 'ObjectId') {
+      return res.status(400).json({ error: 'Invalid user ID format' });
+    }
+    
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 app.post('/logout', (req,res) => {
