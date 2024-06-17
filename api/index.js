@@ -22,7 +22,7 @@ const secret = 'asdfe45we45w345wegw345werjktjwertkj';
 const bucket = 'ohagan-mern-blog';
 
 const allowedOrigins = [
-  'https://mern-blog-client-smoky.vercel.app',
+  'https://www.tim-ohagan.com',
   'http://localhost:3000'
 ];
 
@@ -97,7 +97,7 @@ app.post('/login', async (req, res) => {
     const userDoc = await User.findOne({ username });
 
     if (!userDoc) {
-      return res.status(400).json('Wrong credentials'); // User not found
+      return res.status(400).json('Wrong credentials');
     }
 
     const passOk = bcrypt.compareSync(password, userDoc.password);
@@ -329,12 +329,10 @@ app.delete('/post/:id', async (req, res) => {
         return res.status(403).json({ error: 'Unauthorized to delete this post' });
       }
 
-      // 4. Extract the image filename from the S3 URL
       if (postDoc.cover) {
         const imageUrlParts = postDoc.cover.split('/');
         const imageName = imageUrlParts[imageUrlParts.length - 1];
 
-        // 5. Delete the image from S3
         const client = new S3Client({
           region: 'us-east-2',
           credentials: {
@@ -348,7 +346,6 @@ app.delete('/post/:id', async (req, res) => {
         }));
       }
 
-      // 6. Delete the post from MongoDB (this is already in your code)
       await Post.findByIdAndDelete(id); 
 
       res.json({ success: true });
@@ -453,12 +450,10 @@ app.delete('/project/:id', async (req, res) => {
         return res.status(403).json({ error: 'Unauthorized to delete this project' });
       }
 
-      // 4. Extract the image filename from the S3 URL
       if (projectDoc.cover) {
         const imageUrlParts = projectDoc.cover.split('/');
         const imageName = imageUrlParts[imageUrlParts.length - 1];
 
-        // 5. Delete the image from S3
         const client = new S3Client({
           region: 'us-east-2',
           credentials: {
@@ -472,7 +467,6 @@ app.delete('/project/:id', async (req, res) => {
         }));
       }
 
-      // 6. Delete the project from MongoDB (this is already in your code)
       await Project.findByIdAndDelete(id); 
 
       res.json({ success: true });

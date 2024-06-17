@@ -1,4 +1,4 @@
-import { useEffect } from 'react'; // Import useEffect hook
+import { useEffect } from 'react';
 
 export default function IndexPage() {
   const resumeData = {

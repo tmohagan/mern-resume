@@ -29,19 +29,16 @@ export default function ProjectPage() {
           headers: {
             'Content-Type': 'application/json',
           },
-          credentials: 'include', // Include cookies for authentication
+          credentials: 'include',
         });
   
         if (response.ok) {
-          // Successfully deleted
           navigate('/');
         } else {
           console.error('Error deleting project:', response.statusText);
-          // Handle the error, e.g., display an error message to the user
         }
       } catch (error) {
         console.error('Error deleting project:', error);
-        // Handle network errors or other exceptions
       }
     }
   }
