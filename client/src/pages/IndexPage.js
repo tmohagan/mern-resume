@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Link } from "react-router-dom";
 
 export default function IndexPage() {
   const resumeData = {
@@ -38,11 +38,19 @@ export default function IndexPage() {
         ]
       },
     ],
-    skills: ["Java", "Kotlin", "JavaScript", "React", "Scala", "Python", "SQL"],
+    skills: [
+      { name: "Java", postId: "6672fd304f36148307da881a" },
+      { name: "Kotlin", postId: "6672fd9a4f36148307da8826" },
+      { name: "JavaScript", postId: "6672fe174f36148307da8828" },
+      { name: "React", postId: "6672feca4f36148307da883c" },
+      { name: "Scala", postId: "6672ff164f36148307da883e" },
+      { name: "Python", postId: "6672ff524f36148307da8840" },
+      { name: "SQL", postId: "6672ff9b4f36148307da8842" }
+    ],
     technologies: ["WCNP", "CI/CD", "Concord", "Looper", "Docker", "Kubernetes", "Git", "Maven", "Micro Services", "Spring", "Test Automation", "CosmosDB"],
     projects: [
       {
-        title: "This site",
+        title: "tim-ohagan.com (this site)",
         description: "This site was created using JavaScript, React, Node.js, Express, MongoDB. It is hosted on Vercel."
       },
       // ... more project entries
@@ -58,85 +66,132 @@ export default function IndexPage() {
 
   return (
     <div className="resume">
+      <Header name={resumeData.name} contact={resumeData.contact} />
 
-        <h1>{resumeData.name}</h1>
-        <div className="contact">
-          <p>{resumeData.contact.email}</p>
-          <p>{resumeData.contact.phone}</p>
-        </div>
+      <Summary summary={resumeData.summary} />
 
+      <Experience experiences={resumeData.experience} />
 
-      <section className="summary">
-        <h2>Summary</h2>
-        <p>{resumeData.summary}</p>
-      </section>
-
-      <section className="experience">
-        <h2>Experience</h2>
-        <ul>
-          {resumeData.experience.map((exp, index) => (
-            <li key={index}>
-              <h3>{exp.company}</h3>
-              <h4>{exp.postition}</h4>
-              <p className="dates">{exp.dates}</p>
-              <ul className="tasks">
-                {exp.tasks.map((task, taskIndex) => (
-                  <li key={taskIndex}>
-                    <h4>{task.title}</h4>
-                    <ul className="details">
-                      {task.details.map((detail, detailIndex) => (
-                        <li key={detailIndex}>{detail}</li>
-                      ))}
-                    </ul>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
-      </section>
-      <section className="skills">
-        <h2>Skills</h2>
-        <ul>
-          {resumeData.skills.map((skill, index) => (
-            <li key={index}>{skill}</li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="technologies">
-        <h2>Technologies</h2>
-        <ul>
-          {resumeData.technologies.map((tech, index) => (
-            <li key={index}>{tech}</li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="projects">
-        <h2>Projects</h2>
-        <ul>
-          {resumeData.projects.map((project, index) => (
-            <li key={index}>
-              <h3>{project.title}</h3>
-              <p>{project.description}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="education">
-        <h2>Education</h2>
-        <ul>
-          {resumeData.education.map((edu, index) => (
-            <li key={index}>
-              <h3>{edu.institution}</h3>
-              <p className="degree">{edu.degree}</p>
-              <p className="dates">{edu.dates}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <Skills skills={resumeData.skills} />
+      <Technologies technologies={resumeData.technologies} />
+      <Projects projects={resumeData.projects} />
+      <Education educations={resumeData.education} />
     </div>
   );
 }
+
+// Header Component
+const Header = ({ name, contact }) => (
+  <>
+    <h1>{name}</h1>
+    <div className="contact">
+      <p>{contact.email}</p>
+      <p>{contact.phone}</p>
+    </div>
+  </>
+);
+
+// Summary Component
+const Summary = ({ summary }) => (
+  <section className="summary">
+    <h2>Summary</h2>
+    <p>{summary}</p>
+  </section>
+);
+
+// Experience Component
+const Experience = ({ experiences }) => (
+  <section className="experience">
+    <h2>Experience</h2>
+    <ul>
+      {experiences.map((exp, index) => (
+        <ExperienceItem key={index} exp={exp} />
+      ))}
+    </ul>
+  </section>
+);
+
+// ExperienceItem Component
+const ExperienceItem = ({ exp }) => (
+  <li>
+    <h3>{exp.company}</h3>
+    <h4>{exp.postition}</h4>
+    <p className="dates">{exp.dates}</p>
+    <ul className="tasks">
+      {exp.tasks.map((task, taskIndex) => (
+        <TaskItem key={taskIndex} task={task} />
+      ))}
+    </ul>
+  </li>
+);
+
+// TaskItem Component
+const TaskItem = ({ task }) => (
+  <li>
+    <h4>{task.title}</h4>
+    <ul className="details">
+      {task.details.map((detail, detailIndex) => (
+        <li key={detailIndex}>{detail}</li>
+      ))}
+    </ul>
+  </li>
+);
+
+// Skills Component
+const Skills = ({ skills }) => (
+  <section className="skills">
+    <h2>Skills</h2>
+    <ul className="skills-list">
+      {skills.map((skill, index) => (
+        <li key={index}>
+          <Link to={`/post/${skill.postId}`}>
+            {skill.name}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </section>
+);
+
+// Technologies Component
+const Technologies = ({ technologies }) => (
+  <section className="technologies">
+    <h2>Technologies</h2>
+    <ul>
+      {technologies.map((tech, index) => (
+        <li key={index}>{tech}</li>
+      ))}
+    </ul>
+  </section>
+);
+
+// Projects Component
+const Projects = ({ projects }) => (
+  <section className="projects">
+    <h2>Projects</h2>
+    <ul>
+      {projects.map((project, index) => (
+        <li key={index}>
+          <h3>{project.title}</h3>
+          <p>{project.description}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+);
+
+// Education Component
+const Education = ({ educations }) => (
+  <section className="education">
+    <h2>Education</h2>
+    <ul>
+      {educations.map((edu, index) => (
+        <li key={index}>
+          <h3>{edu.institution}</h3>
+          <p className="degree">{edu.degree}</p>
+          <p className="dates">{edu.dates}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+);

@@ -1,8 +1,11 @@
-export default function Image({src,...rest}) {
-    src = src && src.includes('https://')
-      ? src
-      : `${process.env.REACT_APP_API_URL}/`+src;
-    return (
-      <img {...rest} src={src} alt={''} />
-    );
-  }
+import React from 'react';
+
+export default function Image({ src, alt }) {
+  return (
+    <img 
+      src={src} 
+      alt={'image not available'}
+      style={{ width: '100%', height: 'auto' }}  // Make image responsive
+    />
+  );
+}
