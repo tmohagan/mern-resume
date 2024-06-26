@@ -20,6 +20,8 @@ import AccountPage from "./pages/AccountPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 
+import SentimentProject from "./projects/SentimentProject";
+
 function App() {
   return (
     <UserContextProvider>
@@ -40,6 +42,8 @@ function App() {
           <Route path="/account" element={<AccountPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+
+          <Route path="/projects/sentiment" element={<SentimentProject />} />
         </Route>
       </Routes>
     </UserContextProvider>

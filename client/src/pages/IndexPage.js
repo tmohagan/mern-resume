@@ -153,7 +153,7 @@ const Skills = ({ skills }) => (
   </section>
 );
 
-// Technologies Component
+// technologies Component
 const Technologies = ({ technologies }) => (
   <section className="technologies">
     <h2>Technologies</h2>
