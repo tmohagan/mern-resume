@@ -21,6 +21,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 
 import SentimentProject from "./projects/SentimentProject";
+import ThumbnailProject from "./projects/ThumbnailProject";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
 
           <Route path="/projects/sentiment" element={<SentimentProject />} />
+          <Route path="/projects/thumbnail" element={<ThumbnailProject />} />
         </Route>
       </Routes>
     </UserContextProvider>
