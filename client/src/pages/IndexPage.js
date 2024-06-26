@@ -53,6 +53,10 @@ export default function IndexPage() {
         title: "tim-ohagan.com (this site)",
         description: "This site was created using JavaScript, React, Node.js, Express, MongoDB. It is hosted on Vercel."
       },
+      {
+        title: "sentiment analysis",
+        description: "Python Vader sentiment analysis demo"
+      },
       // ... more project entries
     ],
     education: [
