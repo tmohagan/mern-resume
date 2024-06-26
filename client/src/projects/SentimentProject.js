@@ -4,6 +4,19 @@ function SentimentAnalyzer() {
   const [text, setText] = useState('');
   const [sentiment, setSentiment] = useState(null);
 
+  const getEmoji = (sentiment) => {
+    switch (sentiment) {
+      case 'positive':
+        return '😄'; // Smiling face with open mouth
+      case 'negative':
+        return '😔'; // Pensive face
+      case 'neutral':
+        return '😐'; // Neutral face
+      default:
+        return '❓'; // Question mark
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -26,7 +39,7 @@ function SentimentAnalyzer() {
 
       {sentiment && (
         <div>
-          <h2>Sentiment: {sentiment}</h2>
+          <h2>Sentiment: {getEmoji(sentiment)}</h2> 
         </div>
       )}
     </div>
