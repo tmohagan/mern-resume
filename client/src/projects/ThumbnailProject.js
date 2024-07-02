@@ -11,10 +11,10 @@ function ThumbnailProject() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:8080/generate?imageUrl=${encodeURIComponent(imageUrl)}&width=${width}&height=${height}`);
+        const response = await fetch(`${process.env.REACT_APP_JAVA_THUMBNAIL_API_URL}/generate?imageUrl=${encodeURIComponent(imageUrl)}&width=${width}&height=${height}`);
       const data = await response.text();
       setThumbnailData(data);
-      setError(null); // Clear previous errors
+      setError(null);
     } catch (err) {
       setError("Error generating thumbnail. Please check the URL and server.");
       console.error(err);

@@ -23,7 +23,8 @@ const bucket = 'ohagan-mern-blog';
 
 const allowedOrigins = [
   'https://www.tim-ohagan.com',
-  'http://localhost:3000'
+  'http://localhost:3000',
+  'https://java-thumbnail.onrender.com'
 ];
 
 const corsOptions = {
