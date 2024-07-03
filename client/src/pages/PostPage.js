@@ -1,12 +1,11 @@
 import {useContext, useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams, Link} from "react-router-dom";
 import {formatISO9075} from "date-fns";
 import {UserContext} from "../UserContext";
-import {Link} from 'react-router-dom';
 import Image from "../Image.jsx";
 
 export default function PostPage() {
-  const [postInfo,setPostInfo] = useState(null);
+  const [postInfo, setPostInfo] = useState(null);
   const {userInfo} = useContext(UserContext);
   const {id} = useParams();
   const navigate = useNavigate();
@@ -69,6 +68,11 @@ export default function PostPage() {
       <div className="image">
         <Image src={postInfo.cover} alt=""/>
       </div>
+      {postInfo.project && (
+        <div className="project-link">
+          Associated Project: <Link to={`/project/${postInfo.project._id}`}>{postInfo.project.title}</Link>
+        </div>
+      )}
       <div className="content" dangerouslySetInnerHTML={{__html:postInfo.content}} />
     </div>
   );

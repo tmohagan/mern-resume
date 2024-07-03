@@ -246,51 +246,75 @@ app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
     imageUrl = await uploadToS3(path, originalname, mimetype);
   }
 
-
   const {token} = req.cookies;
   jwt.verify(token, secret, {}, async (err,info) => {
     if (err) {
       throw err;
     }
-    const {title,summary,content} = req.body;
-    const postDoc = await Post.create({
+    const {title, summary, content, project} = req.body;
+    const postData = {
       title,
       summary,
       content,
-      cover:imageUrl,
-      author:info.id,
-    });
+      cover: imageUrl,
+      author: info.id,
+    };
+
+    if (project && project !== "") {
+      postData.project = project;
+    }
+
+    const postDoc = await Post.create(postData);
     res.json(postDoc);
   });
 });
 
-app.put('/post',uploadMiddleware.single('file'), async (req,res) => {
+app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
   let imageUrl = null;
   if (req.file) {
-    const {originalname, path, mimetype} = req.file;
+    const { originalname, path, mimetype } = req.file;
     imageUrl = await uploadToS3(path, originalname, mimetype);
   }
 
-  const {token} = req.cookies;
-  jwt.verify(token, secret, {}, async (err,info) => {
+  const { token } = req.cookies;
+  jwt.verify(token, secret, {}, async (err, info) => {
     if (err) throw err;
-    const {id,title,summary,content} = req.body;
-    const postDoc = await Post.findById(id);
-    const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
-    if (!isAuthor) {
-      return res.status(400).json('you are not the author');
+    const { id, title, summary, content, project } = req.body;
+    try {
+      const postDoc = await Post.findById(id);
+      if (!postDoc) {
+        return res.status(404).json('Post not found');
+      }
+
+      const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
+      if (!isAuthor) {
+        return res.status(403).json('You are not the author');
+      }
+
+      const updateData = {
+        title,
+        summary,
+        content,
+        cover: imageUrl ? imageUrl : postDoc.cover,
+      };
+
+      // Only update the project field if it's provided
+      if (project !== undefined) {
+        updateData.project = project || null; // Set to null if empty string
+      }
+
+      await postDoc.updateOne(updateData);
+
+      // Fetch the updated post to return in the response
+      const updatedPost = await Post.findById(id).populate('project', 'title');
+
+      res.json(updatedPost);
+    } catch (error) {
+      console.error('Error updating post:', error);
+      res.status(500).json('Internal server error');
     }
-    await postDoc.updateOne({
-      title,
-      summary,
-      content,
-      cover: imageUrl ? imageUrl : postDoc.cover,
-    });
-
-    res.json(postDoc);
   });
-
 });
 
 app.get('/post', async (req,res) => {
@@ -306,9 +330,30 @@ app.get('/post', async (req,res) => {
 app.get('/post/:id', async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
   const {id} = req.params;
-  const postDoc = await Post.findById(id).populate('author', ['username']);
-  res.json(postDoc);
-})
+  try {
+    const postDoc = await Post.findById(id)
+      .populate('author', ['username'])
+      .populate('project', 'title'); // Populate project with its title
+
+    if (!postDoc) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    // Transform the response to include project ID if it exists
+    const response = postDoc.toObject();
+    if (response.project) {
+      response.project = {
+        _id: response.project._id,
+        title: response.project.title
+      };
+    }
+
+    res.json(response);
+  } catch (error) {
+    console.error('Error fetching post:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 app.delete('/post/:id', async (req, res) => {
   try {
