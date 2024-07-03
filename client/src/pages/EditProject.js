@@ -8,6 +8,7 @@ export default function EditProject() {
   const [summary,setSummary] = useState('');
   const [content,setContent] = useState('');
   const [files, setFiles] = useState('');
+  const [demo, setDemo] = useState('');
   const [redirect,setRedirect] = useState(false);
 
   useEffect(() => {
@@ -17,6 +18,7 @@ export default function EditProject() {
           setTitle(projectInfo.title);
           setContent(projectInfo.content);
           setSummary(projectInfo.summary);
+          setDemo(projectInfo.demo);
         });
       });
   }, [id]);
@@ -27,6 +29,7 @@ export default function EditProject() {
     data.set('title', title);
     data.set('summary', summary);
     data.set('content', content);
+    data.set('demo', demo);
     data.set('id', id);
     if (files?.[0]) {
       data.set('file', files?.[0]);
@@ -57,6 +60,11 @@ export default function EditProject() {
              onChange={ev => setSummary(ev.target.value)} />
       <input type="file"
              onChange={ev => setFiles(ev.target.files)} />
+      <input
+            type="text"
+            placeholder="Demo"
+            value={demo}
+            onChange={(ev) => setDemo(ev.target.value)}/>
       <Editor onChange={setContent} value={content} />
       <button style={{marginTop:'5px'}}>update project</button>
     </form>

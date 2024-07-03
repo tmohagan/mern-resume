@@ -10,7 +10,7 @@ export default function EditPost() {
   const [files, setFiles] = useState('');
   const [redirect, setRedirect] = useState(false);
   const [projects, setProjects] = useState([]);
-  const [selectedProject, setSelectedProject] = useState('');
+  const [selectedProjects, setSelectedProjects] = useState([]);
 
   useEffect(() => {
     fetchPost();
@@ -24,7 +24,7 @@ export default function EditPost() {
       setTitle(postInfo.title);
       setContent(postInfo.content);
       setSummary(postInfo.summary);
-      setSelectedProject(postInfo.project || '');
+      setSelectedProjects(postInfo.projects.map(project => project._id));
     }
   }
 
@@ -51,7 +51,7 @@ export default function EditPost() {
     data.set('summary', summary);
     data.set('content', content);
     data.set('id', id);
-    data.set('project', selectedProject);
+    data.set('projects', selectedProjects.join(','));
     if (files?.[0]) {
       data.set('file', files?.[0]);
     }
@@ -82,10 +82,10 @@ export default function EditPost() {
       <input type="file"
              onChange={ev => setFiles(ev.target.files)} />
       <select 
-        value={selectedProject} 
-        onChange={ev => setSelectedProject(ev.target.value)}
+        multiple
+        value={selectedProjects}
+        onChange={ev => setSelectedProjects(Array.from(ev.target.selectedOptions, option => option.value))}
       >
-        <option value="">Select a project (optional)</option>
         {projects.map(project => (
           <option key={project._id} value={project._id}>
             {project.title}

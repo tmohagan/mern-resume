@@ -69,6 +69,11 @@ export default function ProjectPage() {
       <div className="image">
         <Image src={projectInfo.cover} alt=""/>
       </div>
+      {projectInfo.demo && (
+        <Link className="demo-link" to={`/projects/${projectInfo.demo}`}>
+        view live demo
+        </Link>
+      )}
       <div className="content" dangerouslySetInnerHTML={{__html:projectInfo.content}} />
     </div>
   );

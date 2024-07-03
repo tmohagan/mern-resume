@@ -251,20 +251,15 @@ app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
     if (err) {
       throw err;
     }
-    const {title, summary, content, project} = req.body;
-    const postData = {
+    const {title, summary, content, projects} = req.body;
+    const postDoc = await Post.create({
       title,
       summary,
       content,
       cover: imageUrl,
       author: info.id,
-    };
-
-    if (project && project !== "") {
-      postData.project = project;
-    }
-
-    const postDoc = await Post.create(postData);
+      projects: projects ? projects.split(',') : []
+    });
     res.json(postDoc);
   });
 });
@@ -280,7 +275,7 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
   const { token } = req.cookies;
   jwt.verify(token, secret, {}, async (err, info) => {
     if (err) throw err;
-    const { id, title, summary, content, project } = req.body;
+    const { id, title, summary, content, projects } = req.body;
     try {
       const postDoc = await Post.findById(id);
       if (!postDoc) {
@@ -297,17 +292,12 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
         summary,
         content,
         cover: imageUrl ? imageUrl : postDoc.cover,
+        projects: projects ? projects.split(',') : []
       };
-
-      // Only update the project field if it's provided
-      if (project !== undefined) {
-        updateData.project = project || null; // Set to null if empty string
-      }
 
       await postDoc.updateOne(updateData);
 
-      // Fetch the updated post to return in the response
-      const updatedPost = await Post.findById(id).populate('project', 'title');
+      const updatedPost = await Post.findById(id).populate('projects', 'title');
 
       res.json(updatedPost);
     } catch (error) {
@@ -333,22 +323,13 @@ app.get('/post/:id', async (req, res) => {
   try {
     const postDoc = await Post.findById(id)
       .populate('author', ['username'])
-      .populate('project', 'title'); // Populate project with its title
+      .populate('projects', 'title');
 
     if (!postDoc) {
       return res.status(404).json({ message: 'Post not found' });
     }
 
-    // Transform the response to include project ID if it exists
-    const response = postDoc.toObject();
-    if (response.project) {
-      response.project = {
-        _id: response.project._id,
-        title: response.project.title
-      };
-    }
-
-    res.json(response);
+    res.json(postDoc);
   } catch (error) {
     console.error('Error fetching post:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -418,12 +399,13 @@ app.post('/project', uploadMiddleware.single('file'), async (req,res) => {
     if (err) {
       throw err;
     }
-    const {title,summary,content} = req.body;
+    const {title,summary,content, demo} = req.body;
     const projectDoc = await Project.create({
       title,
       summary,
       content,
       cover:imageUrl,
+      demo,
       author:info.id,
     });
     res.json(projectDoc);
@@ -441,7 +423,7 @@ app.put('/project',uploadMiddleware.single('file'), async (req,res) => {
   const {token} = req.cookies;
   jwt.verify(token, secret, {}, async (err,info) => {
     if (err) throw err;
-    const {id,title,summary,content} = req.body;
+    const {id,title,summary,content, demo} = req.body;
     const projectDoc = await Project.findById(id);
     const isAuthor = JSON.stringify(projectDoc.author) === JSON.stringify(info.id);
     if (!isAuthor) {
@@ -452,6 +434,7 @@ app.put('/project',uploadMiddleware.single('file'), async (req,res) => {
       summary,
       content,
       cover: imageUrl ? imageUrl : projectDoc.cover,
+      demo,
     });
 
     res.json(projectDoc);

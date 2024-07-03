@@ -61,13 +61,13 @@ export default function Header() {
         <>
         <div className={`dropdown ${activeDropdown === 'posts' ? 'active' : ''}`}>
           <button className="dropdown-toggle" onClick={() => handleDropdownToggle('posts')}>
-            posts
+            skills
           </button>
           {activeDropdown === 'posts' && (
             <div className="dropdown-menu">
               <div>
-              <Link to="/posts_index" onClick={handleLinkClick}>view posts</Link>
-              <Link to="/create_post" onClick={handleLinkClick}>create post</Link>
+              <Link to="/posts_index" onClick={handleLinkClick}>view my skill</Link>
+              <Link to="/create_post" onClick={handleLinkClick}>create skill</Link>
               </div>
             </div>
           )}

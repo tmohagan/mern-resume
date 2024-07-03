@@ -68,9 +68,15 @@ export default function PostPage() {
       <div className="image">
         <Image src={postInfo.cover} alt=""/>
       </div>
-      {postInfo.project && (
-        <div className="project-link">
-          Associated Project: <Link to={`/project/${postInfo.project._id}`}>{postInfo.project.title}</Link>
+      {postInfo.projects && postInfo.projects.length > 0 && (
+        <div className="project-links">
+          My projects using this skill: 
+          {postInfo.projects.map((project, index) => (
+            <span key={project._id}>
+              <Link to={`/project/${project._id}`}>{project.title}</Link>
+              {index < postInfo.projects.length - 1 ? ', ' : ''}
+            </span>
+          ))}
         </div>
       )}
       <div className="content" dangerouslySetInnerHTML={{__html:postInfo.content}} />
