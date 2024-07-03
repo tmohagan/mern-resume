@@ -39,25 +39,46 @@ export default function IndexPage() {
       },
     ],
     skills: [
-      { name: "Java", postId: "6672fd304f36148307da881a" },
-      { name: "Kotlin", postId: "6672fd9a4f36148307da8826" },
       { name: "JavaScript", postId: "6672fe174f36148307da8828" },
       { name: "React", postId: "6672feca4f36148307da883c" },
-      { name: "Scala", postId: "6672ff164f36148307da883e" },
+      { name: "Java", postId: "6672fd304f36148307da881a" },
       { name: "Python", postId: "6672ff524f36148307da8840" },
+      { name: "Kotlin", postId: "6672fd9a4f36148307da8826" },    
+      { name: "Scala", postId: "6672ff164f36148307da883e" },
       { name: "SQL", postId: "6672ff9b4f36148307da8842" }
     ],
-    technologies: ["WCNP", "CI/CD", "Concord", "Looper", "Docker", "Kubernetes", "Git", "Maven", "Micro Services", "Spring", "Test Automation", "CosmosDB"],
+    technologies: [
+      { name: "Git", postId: "0" },
+      { name: "Spring", postId: "0" },
+      { name: "Micro Services", postId: "0" },
+      { name: "MongoDB", postId: "6673015a4f36148307da884e" },
+      { name: "Maven", postId: "0" },
+      { name: "CI/CD", postId: "0" },
+      { name: "Docker", postId: "667cc433d418a4bbdefa6407" },
+      { name: "AWS S3", postId: "0" },
+      { name: "WCNP", postId: "0" },
+      { name: "Concord", postId: "0" },
+      { name: "Looper", postId: "0" },
+      { name: "Kubernetes", postId: "0" },
+      { name: "Test Automation", postId: "0" },
+      
+    ],
     projects: [
       {
         title: "tim-ohagan.com (this site)",
-        description: "This site was created using JavaScript, React, Node.js, Express, MongoDB. It is hosted on Vercel."
+        description: "This site was created using JavaScript, React, Node.js, Express, MongoDB. Images hosted on AWS S3. Deployed to Vercel",
+        projectId: "6673854c4ae6fd43d7f797ac"
       },
       {
-        title: "sentiment analysis",
-        description: "Python Vader sentiment analysis demo"
+        title: "python - sentiment analysis",
+        description: "Python Vader sentiment analysis micro service. Deployed to Vercel",
+        projectId: "667c4a5ab3f6a3d01abbaaad"
       },
-      // ... more project entries
+      {
+        title: "java - image resizer",
+        description: "Java image resizer micro service. GitHub actions, containerized on Docker Hub, deployed to Render cloud platform",
+        projectId: "667cc51ad418a4bbdefa640d"
+      },
     ],
     education: [
       {
@@ -144,7 +165,7 @@ const TaskItem = ({ task }) => (
 // Skills Component
 const Skills = ({ skills }) => (
   <section className="skills">
-    <h2>Skills</h2>
+    <h2>Languages</h2>
     <ul className="skills-list">
       {skills.map((skill, index) => (
         <li key={index}>
@@ -157,19 +178,40 @@ const Skills = ({ skills }) => (
   </section>
 );
 
-// technologies Component
+// Technologies Component
 const Technologies = ({ technologies }) => (
-  <section className="technologies">
+  <section className="skills">
     <h2>Technologies</h2>
-    <ul>
+    <ul className="skills-list">
       {technologies.map((tech, index) => (
-        <li key={index}>{tech}</li>
+        <li key={index}>
+          <Link to={`/post/${tech.postId}`}>
+            {tech.name}
+          </Link>
+        </li>
       ))}
     </ul>
   </section>
 );
 
 // Projects Component
+const Projects = ({ projects }) => (
+  <section className="skills">
+    <h2>Projects</h2>
+    <ul className="skills-list">
+      {projects.map((project, index) => (
+        <li key={index}>
+          <Link to={`/project/${project.projectId}`}>
+            {project.title}
+          </Link>
+          <p>{project.description}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+);
+
+/* Projects Component
 const Projects = ({ projects }) => (
   <section className="projects">
     <h2>Projects</h2>
@@ -183,6 +225,7 @@ const Projects = ({ projects }) => (
     </ul>
   </section>
 );
+*/
 
 // Education Component
 const Education = ({ educations }) => (
