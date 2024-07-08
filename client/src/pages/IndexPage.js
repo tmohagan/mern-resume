@@ -93,11 +93,8 @@ export default function IndexPage() {
   return (
     <div className="resume">
       <Header name={resumeData.name} contact={resumeData.contact} />
-
       <Summary summary={resumeData.summary} />
-
       <Experience experiences={resumeData.experience} />
-
       <Skills skills={resumeData.skills} />
       <Technologies technologies={resumeData.technologies} />
       <Projects projects={resumeData.projects} />
@@ -106,33 +103,28 @@ export default function IndexPage() {
   );
 }
 
-// Header Component
 const Header = ({ name, contact }) => (
   <>
     <h1>{name}</h1>
     <div className="contact">
-      <p>Email: {contact.email}</p>
-      <p>Phone: {contact.phone}</p>
+      <p>Email: <a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+      <p>Phone: <a href={`tel:${contact.phone}`}>{contact.phone}</a></p>
       <p>LinkedIn: {' '}
         <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">
-        linkedin.com/in/timothy-ohagan/
-        </a>
+          linkedin.com/in/timothy-ohagan/</a>
       </p>
       <p>Website: {' '}
         <a href={contact.website} target="_blank" rel="noopener noreferrer">
-          tim-ohagan.com
-        </a>
+          tim-ohagan.com</a>
       </p>
       <p>GitHub: {' '}
         <a href={contact.github} target="_blank" rel="noopener noreferrer">
-        github.com/tmohagan
-        </a>
+          github.com/tmohagan</a>
       </p>
     </div>
   </>
 );
 
-// Summary Component
 const Summary = ({ summary }) => (
   <section className="summary">
     <h2>Summary</h2>
@@ -140,7 +132,6 @@ const Summary = ({ summary }) => (
   </section>
 );
 
-// Experience Component
 const Experience = ({ experiences }) => (
   <section className="experience">
     <h2>Experience</h2>
@@ -152,7 +143,6 @@ const Experience = ({ experiences }) => (
   </section>
 );
 
-// ExperienceItem Component
 const ExperienceItem = ({ exp }) => (
   <li>
     <h3>{exp.company}</h3>
@@ -166,7 +156,6 @@ const ExperienceItem = ({ exp }) => (
   </li>
 );
 
-// TaskItem Component
 const TaskItem = ({ task }) => (
   <li>
     <h4>{task.title}</h4>
@@ -178,7 +167,6 @@ const TaskItem = ({ task }) => (
   </li>
 );
 
-// Skills Component
 const Skills = ({ skills }) => (
   <section className="skills">
     <h2>Languages</h2>
@@ -194,7 +182,6 @@ const Skills = ({ skills }) => (
   </section>
 );
 
-// Technologies Component
 const Technologies = ({ technologies }) => (
   <section className="skills">
     <h2>Technologies</h2>
@@ -210,7 +197,6 @@ const Technologies = ({ technologies }) => (
   </section>
 );
 
-// Projects Component
 const Projects = ({ projects }) => (
   <section className="skills">
     <h2>Projects</h2>
@@ -227,23 +213,6 @@ const Projects = ({ projects }) => (
   </section>
 );
 
-/* Projects Component
-const Projects = ({ projects }) => (
-  <section className="projects">
-    <h2>Projects</h2>
-    <ul>
-      {projects.map((project, index) => (
-        <li key={index}>
-          <h3>{project.title}</h3>
-          <p>{project.description}</p>
-        </li>
-      ))}
-    </ul>
-  </section>
-);
-*/
-
-// Education Component
 const Education = ({ educations }) => (
   <section className="education">
     <h2>Education</h2>
