@@ -9,8 +9,8 @@ export default function IndexPage() {
       <Header name={name} contact={contact} />
       <Summary summary={summary} />
       <Experience experiences={experience} />
-      <Skills skills={skills} />
-      <Technologies technologies={technologies} />
+      <Skills title="Languages" skills={skills} />
+      <Skills title="Technologies" skills={technologies} />
       <Projects projects={projects} />
       <Education educations={education} />
     </div>
@@ -23,21 +23,14 @@ const Header = ({ name, contact }) => (
     <div className="contact">
       <p>Email: <a href={`mailto:${contact.email}`}>{contact.email}</a></p>
       <p>Phone: <a href={`tel:${contact.phone}`}>{contact.phone}</a></p>
-      <p>LinkedIn:{' '}
-        <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">
-          linkedin.com/in/timothy-ohagan/
-        </a>
-      </p>
-      <p>Website:{' '}
-        <a href={contact.website} target="_blank" rel="noopener noreferrer">
-          tim-ohagan.com
-        </a>
-      </p>
-      <p>GitHub:{' '}
-        <a href={contact.github} target="_blank" rel="noopener noreferrer">
-          github.com/tmohagan
-        </a>
-      </p>
+      {['linkedin', 'website', 'github'].map(key => (
+        <p key={key}>
+          {key.charAt(0).toUpperCase() + key.slice(1)}:{' '}
+          <a href={contact[key]} target="_blank" rel="noopener noreferrer">
+            {contact[key]}
+          </a>
+        </p>
+      ))}
     </div>
   </>
 );
@@ -54,56 +47,35 @@ const Experience = ({ experiences }) => (
     <h2>Experience</h2>
     <ul>
       {experiences.map((exp, index) => (
-        <ExperienceItem key={index} exp={exp} />
-      ))}
-    </ul>
-  </section>
-);
-
-const ExperienceItem = ({ exp }) => (
-  <li>
-    <h3>{exp.company}</h3>
-    <h4>{exp.position}</h4>
-    <p className="dates">{exp.dates}</p>
-    <ul className="tasks">
-      {exp.tasks.map((task, taskIndex) => (
-        <TaskItem key={taskIndex} task={task} />
-      ))}
-    </ul>
-  </li>
-);
-
-const TaskItem = ({ task }) => (
-  <li>
-    <h4>{task.title}</h4>
-    <ul className="details">
-      {task.details.map((detail, detailIndex) => (
-        <li key={detailIndex}>{detail}</li>
-      ))}
-    </ul>
-  </li>
-);
-
-const Skills = ({ skills }) => (
-  <section className="skills">
-    <h2>Languages</h2>
-    <ul className="skills-list">
-      {skills.map((skill, index) => (
         <li key={index}>
-          <Link to={`/post/${skill.postId}`}>{skill.name}</Link>
+          <h3>{exp.company}</h3>
+          <h4>{exp.position}</h4>
+          <p className="dates">{exp.dates}</p>
+          <ul className="tasks">
+            {exp.tasks.map((task, taskIndex) => (
+              <li key={taskIndex}>
+                <h4>{task.title}</h4>
+                <ul className="details">
+                  {task.details.map((detail, detailIndex) => (
+                    <li key={detailIndex}>{detail}</li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
         </li>
       ))}
     </ul>
   </section>
 );
 
-const Technologies = ({ technologies }) => (
+const Skills = ({ title, skills }) => (
   <section className="skills">
-    <h2>Technologies</h2>
+    <h2>{title}</h2>
     <ul className="skills-list">
-      {technologies.map((tech, index) => (
+      {skills.map((skill, index) => (
         <li key={index}>
-          <Link to={`/post/${tech.postId}`}>{tech.name}</Link>
+          <Link to={`/post/${skill.postId}`}>{skill.name}</Link>
         </li>
       ))}
     </ul>
