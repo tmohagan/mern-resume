@@ -1,22 +1,11 @@
 import {Link, useNavigate} from "react-router-dom";
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect} from "react";
 import {UserContext} from "./UserContext";
 
 export default function Header() {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const username = userInfo?.username;
   const navigate = useNavigate();
-
-  const [activeDropdown, setActiveDropdown] = useState(null);
-
-  const handleDropdownToggle = (dropdownName) => {
-    setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
-  };
-
-  const handleLinkClick = () => {
-    setActiveDropdown(null);
-  };
-
 
   useEffect(() => {
     if (username) { 
@@ -38,8 +27,8 @@ export default function Header() {
     }
   }, [username]);
 
-  const logout = async () => { 
-    setActiveDropdown(null); 
+  const logout = async (event) => {
+    event.preventDefault(); // Prevent default link behavior
     try {
       await fetch(`${process.env.REACT_APP_API_URL}/logout`, {
         credentials: "include",
@@ -57,113 +46,21 @@ export default function Header() {
     <header>
       <Link to="/" className="logo">tim-ohagan.com</Link>
       <nav>
-        {username && (
-        <>
-        <div className={`dropdown ${activeDropdown === 'posts' ? 'active' : ''}`}>
-          <button className="dropdown-toggle" onClick={() => handleDropdownToggle('posts')}>
-            skills
-          </button>
-          {activeDropdown === 'posts' && (
-            <div className="dropdown-menu">
-              <div>
-              <Link to="/posts_index" onClick={handleLinkClick}>view my skill</Link>
-              <Link to="/create_post" onClick={handleLinkClick}>create skill</Link>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className={`dropdown ${activeDropdown === 'projects' ? 'active' : ''}`}>
-          <button className="dropdown-toggle" onClick={() => handleDropdownToggle('projects')}>
-            projects
-          </button>
-          {activeDropdown === 'projects' && (
-            <div className="dropdown-menu">
-              <div>
-              <Link to="/projects_index" onClick={handleLinkClick}>view projects</Link>
-              <Link to="/create_project" onClick={handleLinkClick}>create project</Link>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className={`dropdown ${activeDropdown === 'contact' ? 'active' : ''}`}>
-          <button className="dropdown-toggle" onClick={() => handleDropdownToggle('contact')}>
-            contact
-          </button>
-          {activeDropdown === 'contact' && (
-            <div className="dropdown-menu">
-              <div>
-              <Link to="/contact" onClick={handleLinkClick}>contact me</Link>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className={`dropdown ${activeDropdown === 'account' ? 'active' : ''}`}>
-          <button className="dropdown-toggle" onClick={() => handleDropdownToggle('account')}>
-            my account
-          </button>
-          {activeDropdown === 'account' && (
-            <div className="dropdown-menu">
-              <div>
-              <Link to="/account" onClick={handleLinkClick}>my profile ({username})</Link>
-              <button onClick={logout} className="link-button">logout</button> 
-              </div>
-            </div>
-          )}
-        </div>
-        </>
-        )}
-        {!username && (
-        <>
-        <div className={`dropdown ${activeDropdown === 'posts' ? 'active' : ''}`}>
-          <button className="dropdown-toggle" onClick={() => handleDropdownToggle('posts')}>
-            posts
-          </button>
-          {activeDropdown === 'posts' && (
-            <div className="dropdown-menu">
-              <div>
-              <Link to="/posts_index" onClick={handleLinkClick}>view posts</Link>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className={`dropdown ${activeDropdown === 'projects' ? 'active' : ''}`}>
-          <button className="dropdown-toggle" onClick={() => handleDropdownToggle('projects')}>
-            projects
-          </button>
-          {activeDropdown === 'projects' && (
-            <div className="dropdown-menu">
-              <div>
-              <Link to="/projects_index" onClick={handleLinkClick}>view projects</Link>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className={`dropdown ${activeDropdown === 'contact' ? 'active' : ''}`}>
-          <button className="dropdown-toggle" onClick={() => handleDropdownToggle('contact')}>
-            contact
-          </button>
-          {activeDropdown === 'contact' && (
-            <div className="dropdown-menu">
-              <div>
-              <Link to="/contact" onClick={handleLinkClick}>contact me</Link>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className={`dropdown ${activeDropdown === 'account' ? 'active' : ''}`}>
-          <button className="dropdown-toggle" onClick={() => handleDropdownToggle('account')}>
-            my account
-          </button>
-          {activeDropdown === 'account' && (
-            <div className="dropdown-menu">
-              <div>
-              <Link to="/login" onClick={handleLinkClick}>login</Link>
-              <Link to="/register" onClick={handleLinkClick}>register</Link>
-              </div>
-            </div>
-          )}
-        </div>
-        </>
+        {username ? (
+          <>
+            <Link to="/posts_index">skills</Link>
+            <Link to="/projects_index">projects</Link>
+            <Link to="/contact">contact</Link>
+            <Link to="/account">my profile</Link>
+            <Link to="/" onClick={logout}>logout</Link>
+          </>
+        ) : (
+          <>
+            <Link to="/posts_index">posts</Link>
+            <Link to="/projects_index">projects</Link>
+            <Link to="/contact">contact</Link>
+            <Link to="/login">login</Link>
+          </>
         )}
       </nav>
     </header>
