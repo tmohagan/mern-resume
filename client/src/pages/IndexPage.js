@@ -1,7 +1,37 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import resumeData from "./resumeData";
 
 export default function IndexPage() {
+  const [resumeData, setResumeData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch("/resumeData.json")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to load resume data");
+        }
+        return response.json();
+      })
+      .then((data) => setResumeData(data))
+      .catch((error) => {
+        console.error("Error loading resume data:", error);
+        setError("Failed to load resume data. Please try again later.");
+      });
+  }, []);
+
+  if (error) {
+    return (
+      <div className="error-message">
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (!resumeData) {
+    return <div>Loading...</div>;
+  }
+
   const { name, contact, summary, experience, skills, technologies, projects, education } = resumeData;
 
   return (
