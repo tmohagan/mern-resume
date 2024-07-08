@@ -107,14 +107,75 @@ header .dropdown-menu div {
     width: 100%;           
 }
 
-/* Index */
-.skills-list a {  
-    color: blue;
-    text-decoration: underline;
+/* Resume Styles */
+.resume {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    line-height: 1.6;
   }
   
-  .skills-list a:visited {
-    color: purple;
+  .resume h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .resume h2 {
+    font-size: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #333;
+    padding-bottom: 0.5rem;
+  }
+  
+  .resume h3 {
+    font-size: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .resume h4 {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .resume p {
+    margin-bottom: 1rem;
+  }
+  
+  .resume ul {
+    margin-bottom: 1rem;
+  }
+  
+  .resume li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .resume .contact {
+    margin-bottom: 2rem;
+  }
+  
+  .resume .contact p {
+    margin-bottom: 0.5rem;
+  }
+  
+  .resume .dates {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+  
+  .resume .tasks {
+    margin-left: 1.5rem;
+  }
+  
+  .resume .tasks li {
+    margin-bottom: 1rem;
+  }
+  
+  .resume .tasks .details {
+    margin-left: 1.5rem;
   }
 
 /* Posts */

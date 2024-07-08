@@ -36,43 +36,41 @@ const Header = ({ name, contact }) => (
 );
 
 const Summary = ({ summary }) => (
-  <section className="summary">
+  <section>
     <h2>Summary</h2>
     <p>{summary}</p>
   </section>
 );
 
 const Experience = ({ experiences }) => (
-  <section className="experience">
+  <section>
     <h2>Experience</h2>
-    <ul>
-      {experiences.map((exp, index) => (
-        <li key={index}>
-          <h3>{exp.company}</h3>
-          <h4>{exp.position}</h4>
-          <p className="dates">{exp.dates}</p>
-          <ul className="tasks">
-            {exp.tasks.map((task, taskIndex) => (
-              <li key={taskIndex}>
-                <h4>{task.title}</h4>
-                <ul className="details">
-                  {task.details.map((detail, detailIndex) => (
-                    <li key={detailIndex}>{detail}</li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-        </li>
-      ))}
-    </ul>
+    {experiences.map((exp, index) => (
+      <div key={index}>
+        <h3>{exp.company}</h3>
+        <h4>{exp.position}</h4>
+        <p className="dates">{exp.dates}</p>
+        <ul className="tasks">
+          {exp.tasks.map((task, taskIndex) => (
+            <li key={taskIndex}>
+              <h4>{task.title}</h4>
+              <ul className="details">
+                {task.details.map((detail, detailIndex) => (
+                  <li key={detailIndex}>{detail}</li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
   </section>
 );
 
 const Skills = ({ title, skills }) => (
-  <section className="skills">
+  <section>
     <h2>{title}</h2>
-    <ul className="skills-list">
+    <ul>
       {skills.map((skill, index) => (
         <li key={index}>
           <Link to={`/post/${skill.postId}`}>{skill.name}</Link>
@@ -83,9 +81,9 @@ const Skills = ({ title, skills }) => (
 );
 
 const Projects = ({ projects }) => (
-  <section className="skills">
+  <section>
     <h2>Projects</h2>
-    <ul className="skills-list">
+    <ul>
       {projects.map((project, index) => (
         <li key={index}>
           <Link to={`/project/${project.projectId}`}>{project.title}</Link>
@@ -97,13 +95,13 @@ const Projects = ({ projects }) => (
 );
 
 const Education = ({ educations }) => (
-  <section className="education">
+  <section>
     <h2>Education</h2>
     <ul>
       {educations.map((edu, index) => (
         <li key={index}>
           <h3>{edu.institution}</h3>
-          <p className="degree">{edu.degree}</p>
+          <p>{edu.degree}</p>
           <p className="dates">{edu.dates}</p>
         </li>
       ))}
