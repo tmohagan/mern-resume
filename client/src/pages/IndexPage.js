@@ -6,8 +6,9 @@ export default function IndexPage() {
     contact: {
       email: "tmohagan@gmail.com",
       phone: "(773) 270-1142",
-      website: "tim-ohagan.com",
-      linkedin: "linkedin.com/in/timothy-ohagan/"
+      website: "https://www.tim-ohagan.com/",
+      linkedin: "https://www.linkedin.com/in/timothy-ohagan/",
+      github: "https://github.com/tmohagan",
     },
     summary: "Tim O’Hagan is a software engineering with light full-stack experience developing ReactJS UI components and API components built on a spring framework.  His technology experience is in the healthcare and accounting spaces within Walmart where he has worked on 8 to 10 person scrum teams to build full scale applications. Tim is a recent Computer Science graduate transitioning from a Software Engineering Intern to a full-time role.",
     experience: [
@@ -110,8 +111,23 @@ const Header = ({ name, contact }) => (
   <>
     <h1>{name}</h1>
     <div className="contact">
-      <p>{contact.email}</p>
-      <p>{contact.phone}</p>
+      <p>Email: {contact.email}</p>
+      <p>Phone: {contact.phone}</p>
+      <p>LinkedIn: {' '}
+        <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">
+        linkedin.com/in/timothy-ohagan/
+        </a>
+      </p>
+      <p>Website: {' '}
+        <a href={contact.website} target="_blank" rel="noopener noreferrer">
+          tim-ohagan.com
+        </a>
+      </p>
+      <p>GitHub: {' '}
+        <a href={contact.github} target="_blank" rel="noopener noreferrer">
+        github.com/tmohagan
+        </a>
+      </p>
     </div>
   </>
 );
