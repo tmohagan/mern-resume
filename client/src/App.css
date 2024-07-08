@@ -49,11 +49,12 @@ header {
     align-items: center;
     margin: 20px 0 50px;
     position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 header a.logo {
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     text-align: left;
     color: #fff;
     text-decoration: none;
@@ -61,24 +62,25 @@ header a.logo {
 
 header nav {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 header nav a {
     text-decoration: none;
     color: #fff;
-    font-size: inherit;
+    font-size: 1.1rem;
     font-family: inherit;
     background: none;
     border: none;
-    padding: 0;
+    padding: 0.5rem;
     cursor: pointer;
     white-space: nowrap;
-    transition: color 0.3s;
+    transition: color 0.3s, background-color 0.3s;
 }
 
 header nav a:hover {
     color: #ccc;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .hamburger {
@@ -251,6 +253,37 @@ div.post p.info span.author {
 div.post p.summary {
     margin: 10px 0;
     line-height: 1.8rem;
+}
+
+.create-post-link {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.create-post-link a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.create-post-link a:hover {
+    background-color: #555;
+}
+
+@media screen and (max-width: 700px) {
+    .create-post-link {
+        margin-bottom: 20px;
+    }
+    
+    .create-post-link a {
+        display: block;
+        width: 100%;
+    }
 }
 /* Forms */
 form.login, form.register, form.contact {

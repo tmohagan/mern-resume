@@ -66,7 +66,7 @@ export default function Header() {
           </>
         ) : (
           <>
-            <Link to="/posts_index" onClick={toggleMenu}>posts</Link>
+            <Link to="/posts_index" onClick={toggleMenu}>skills</Link>
             <Link to="/projects_index" onClick={toggleMenu}>projects</Link>
             <Link to="/contact" onClick={toggleMenu}>contact</Link>
             <Link to="/login" onClick={toggleMenu}>login</Link>
