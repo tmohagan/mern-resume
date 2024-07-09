@@ -117,7 +117,6 @@ const Projects = ({ projects }) => (
       {projects.map((project, index) => (
         <li key={index}>
           <Link to={`/project/${project.projectId}`}>{project.title}</Link>
-          <p>{project.description}</p>
         </li>
       ))}
     </ul>

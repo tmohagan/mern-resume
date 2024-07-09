@@ -1,13 +1,13 @@
-import {useContext, useEffect, useState} from "react";
-import {useNavigate, useParams, Link} from "react-router-dom";
-import {formatISO9075} from "date-fns";
-import {UserContext} from "../UserContext";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import { formatISO9075 } from "date-fns";
+import { UserContext } from "../UserContext";
 import Image from "../Image.jsx";
 
 export default function PostPage() {
   const [postInfo, setPostInfo] = useState(null);
-  const {userInfo} = useContext(UserContext);
-  const {id} = useParams();
+  const { userInfo } = useContext(UserContext);
+  const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -66,20 +66,22 @@ export default function PostPage() {
         </div>
       )}
       <div className="image">
-        <Image src={postInfo.cover} alt=""/>
+        <Image src={postInfo.cover} alt="" />
       </div>
       {postInfo.projects && postInfo.projects.length > 0 && (
         <div className="project-links">
-          My projects using this skill: 
-          {postInfo.projects.map((project, index) => (
-            <span key={project._id}>
-              <Link to={`/project/${project._id}`}>{project.title}</Link>
-              {index < postInfo.projects.length - 1 ? ', ' : ''}
-            </span>
-          ))}
+          <p>Projects using this skill:</p>
+          <ul>
+            {postInfo.projects.map((project, index) => (
+              <li key={project._id}>
+                <Link to={`/project/${project._id}`}>{project.title}</Link>
+                {index < postInfo.projects.length - 1 ? ', ' : ''}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
-      <div className="content" dangerouslySetInnerHTML={{__html:postInfo.content}} />
+      <div className="content" dangerouslySetInnerHTML={{ __html: postInfo.content }} />
     </div>
   );
 }
