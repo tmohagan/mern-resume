@@ -189,6 +189,16 @@ header nav a:hover {
     margin-bottom: 0.5rem;
   }
   
+  .resume .contact a {
+    text-decoration: none;
+    border-bottom: none;
+    transition: border-bottom 0.3s;
+  }
+  
+  .resume .contact a:hover {
+    border-bottom: 1px solid #004499;
+  }
+
   .resume .dates {
     font-style: italic;
     color: #666;
@@ -222,6 +232,12 @@ header nav a:hover {
   .resume ul li a {
     display: inline-block;
     padding: 2px 0;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  .resume ul li a:hover {
+    text-decoration: underline;
   }
   
   .resume .projects a {
@@ -424,6 +440,19 @@ div.content p {
 div.content li {
     margin-bottom: 10px;
 }
+
+div.content a {
+    color: #0066cc;
+    text-decoration: none;
+    border-bottom: 1px solid #0066cc;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  
+  div.content a:hover {
+    color: #004499;
+    border-bottom-color: #004499;
+  }
+
 /* Edit buttons */
 div.edit-row {
     text-align: center;
@@ -568,4 +597,63 @@ div.post p.summary {
   .demo-btn svg {
     width: 20px;
     height: 20px;
+  }
+
+ /* Contact Page */
+.contact-info {
+    margin-top: 20px;
+  }
+  
+  .contact-info p {
+    margin-bottom: 10px;
+  }
+  
+  .contact-link {
+    color: #0066cc;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  
+  .contact-link:hover {
+    color: #004499;
+    border-bottom-color: #004499;
+  }
+  
+  .contact-info .contact-link {
+    display: inline-block;
+    padding: 2px 0;
+  }
+
+  .contact-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .contact-page form.contact {
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .contact-page .contact-info {
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+  }
+  
+  .contact-page .contact-info p {
+    margin-bottom: 10px;
+  }
+  
+  .contact-page .contact-info a {
+    color: #0066cc;
+    text-decoration: none;
+    border-bottom: 1px solid #0066cc;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  
+  .contact-page .contact-info a:hover {
+    color: #004499;
+    border-bottom-color: #004499;
   }

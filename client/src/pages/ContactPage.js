@@ -38,7 +38,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div>
+    <div className="contact-page">
       <form className="contact" onSubmit={handleSubmit}>
         <h1>Contact Me</h1>
         <input
@@ -76,28 +76,35 @@ const ContactInfo = () => (
   <div>
     <div className="contact-info">
       <p>
-        Email: <a href="mailto:tmohagan@gmail.com">tmohagan@gmail.com</a>
+        Email: <a href="mailto:tmohagan@gmail.com" className="contact-link">tmohagan@gmail.com</a>
       </p>
       <p>
-        Phone: <a href="tel:+17732701142">(773) 270-1142</a>
+        Phone: <a href="tel:+17732701142" className="contact-link">(773) 270-1142</a>
       </p>
       <p>
         LinkedIn:{" "}
           <a href="https://www.linkedin.com/in/timothy-ohagan/"
             target="_blank"
-            rel="noopener noreferrer">
+            rel="noopener noreferrer"
+            className="contact-link">
             linkedin.com/in/timothy-ohagan/
           </a>
       </p>
       <p>
         Website:{" "}
-          <a href="https://www.tim-ohagan.com" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.tim-ohagan.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="contact-link">
             tim-ohagan.com
           </a>
       </p>
       <p>
         GitHub:{" "}
-          <a href="https://github.com/tmohagan" target="_blank" rel="noopener noreferrer">
+          <a href="https://github.com/tmohagan" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="contact-link">
             github.com/tmohagan
           </a>
       </p>
