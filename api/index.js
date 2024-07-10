@@ -449,14 +449,21 @@ app.put('/project',uploadMiddleware.single('file'), async (req,res) => {
 
 });
 
-app.get('/project', async (req,res) => {
+app.get('/project', async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
-  res.json(
-    await Project.find()
+  const { page = 1, limit = 10 } = req.query;
+  const skip = (page - 1) * limit;
+
+  const [projects, totalProjects] = await Promise.all([
+    Project.find()
       .populate('author', ['username'])
-      .sort({createdAt: -1})
-      .limit(20)
-  );
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(parseInt(limit)),
+    Project.countDocuments(),
+  ]);
+
+  res.json({ projects, totalProjects });
 });
 
 app.get('/project/:id', async (req, res) => {

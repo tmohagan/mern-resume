@@ -29,15 +29,19 @@ export default function PostsPage() {
         <Post key={post._id} {...post} />
       ))}
       <div className="pagination">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentPage(index + 1)}
-            disabled={currentPage === index + 1}
-          >
-            {index + 1}
-          </button>
-        ))}
+        <button
+          onClick={() => setCurrentPage(prevPage => Math.max(prevPage - 1, 1))}
+          disabled={currentPage === 1}
+        >
+          &lt; Prev
+        </button>
+        <span>{currentPage}</span>
+        <button
+          onClick={() => setCurrentPage(prevPage => Math.min(prevPage + 1, totalPages))}
+          disabled={currentPage === totalPages}
+        >
+          Next &gt;
+        </button>
       </div>
     </>
   );
