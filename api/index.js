@@ -307,14 +307,21 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
   });
 });
 
-app.get('/post', async (req,res) => {
+app.get('/post', async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
-  res.json(
-    await Post.find()
+  const { page = 1, limit = 10 } = req.query;
+  const skip = (page - 1) * limit;
+
+  const [posts, totalPosts] = await Promise.all([
+    Post.find()
       .populate('author', ['username'])
-      .sort({createdAt: -1})
-      .limit(20)
-  );
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(parseInt(limit)),
+    Post.countDocuments(),
+  ]);
+
+  res.json({ posts, totalPosts });
 });
 
 app.get('/post/:id', async (req, res) => {
