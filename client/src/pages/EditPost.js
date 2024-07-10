@@ -24,7 +24,8 @@ export default function EditPost() {
       setTitle(postInfo.title);
       setContent(postInfo.content);
       setSummary(postInfo.summary);
-      setSelectedProjects(postInfo.projects.map(project => project._id));
+      setSelectedProjects(postInfo.projects ? postInfo.projects.map(project => project._id) : []);
+
     }
   }
 
@@ -82,16 +83,20 @@ export default function EditPost() {
       <input type="file"
              onChange={ev => setFiles(ev.target.files)} />
       <select 
-        multiple
-        value={selectedProjects}
-        onChange={ev => setSelectedProjects(Array.from(ev.target.selectedOptions, option => option.value))}
-      >
-        {projects.map(project => (
-          <option key={project._id} value={project._id}>
-            {project.title}
-          </option>
-        ))}
-      </select>
+  multiple
+  value={selectedProjects}
+  onChange={ev => setSelectedProjects(Array.from(ev.target.selectedOptions, option => option.value))}
+>
+  {projects.length > 0 ? (
+    projects.map(project => (
+      <option key={project._id} value={project._id}>
+        {project.title}
+      </option>
+    ))
+  ) : (
+    <option value="">No projects available</option>
+  )}
+</select>
       <Editor onChange={setContent} value={content} />
       <button style={{marginTop:'5px'}}>Update post</button>
     </form>

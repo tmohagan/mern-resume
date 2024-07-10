@@ -467,11 +467,11 @@ textarea.message-input {
 
 /* Post Page */
 div.post-page div.image {
-    max-height: 300px; /* Maintain your desired max-height */
+    max-height: 300px;
     overflow: hidden;
-    display: flex;     /* Enable Flexbox for centering */
-    justify-content: center; /* Center horizontally */
-    align-items: center;    /* Center vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 0 auto;
   }
 
