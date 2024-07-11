@@ -59,7 +59,7 @@
       { "name": "SQL", "postId": "6672ff9b4f36148307da8842" }
     ],
     "technologies": [
-      { "name": "Ubuntu Linux", "postId": "668c9c489311d75d12760f1e" },
+      { "name": "Linux", "postId": "668c9c489311d75d12760f1e" },
       { "name": "Maven", "postId": "668c714fc553a42d6acc75c6" },
       { "name": "Spring", "postId": "668c7120c553a42d6acc75b4" },
       { "name": "Micro Services", "postId": "668c712fc553a42d6acc75ba" },

@@ -3,6 +3,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import { formatISO9075 } from "date-fns";
 import { UserContext } from "../UserContext";
 import Image from "../Image.jsx";
+import CommentSection from "../CommentSection"; // Add this import
 
 export default function PostPage() {
   const [postInfo, setPostInfo] = useState(null);
@@ -82,6 +83,7 @@ export default function PostPage() {
         </div>
       )}
       <div className="content" dangerouslySetInnerHTML={{ __html: postInfo.content }} />
+      <CommentSection postId={id} /> {/* Add this line */}
     </div>
   );
 }
