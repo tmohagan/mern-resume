@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { UserContext } from "./UserContext";
+import { UserContext } from "./UserContext"; // Adjust this path as needed
 
 const CommentSection = ({ postId }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const { userInfo } = useContext(UserContext);
 
   useEffect(() => {
@@ -11,6 +12,7 @@ const CommentSection = ({ postId }) => {
   }, [postId]);
 
   const fetchComments = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(`https://comment-service-w7ayogaiya-uc.a.run.app/comments?postId=${postId}`);
       if (response.ok) {
@@ -21,6 +23,8 @@ const CommentSection = ({ postId }) => {
       }
     } catch (error) {
       console.error('Error fetching comments:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -57,11 +61,17 @@ const CommentSection = ({ postId }) => {
   return (
     <div className="comment-section">
       <h3>Comments</h3>
-      {comments.map((comment) => (
-        <div key={comment.id} className="comment">
-          <p><strong>{comment.username}</strong>: {comment.content}</p>
-        </div>
-      ))}
+      {isLoading ? (
+        <p>Loading comments...</p>
+      ) : comments.length > 0 ? (
+        comments.map((comment) => (
+          <div key={comment.id} className="comment">
+            <p><strong>{comment.username}</strong>: {comment.content}</p>
+          </div>
+        ))
+      ) : (
+        <p>No comments yet.</p>
+      )}
       {userInfo && (
         <form onSubmit={handleSubmit}>
           <textarea
