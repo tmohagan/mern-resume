@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from "./UserContext"; // Adjust this path as needed
 
 const CommentSection = ({ postId }) => {
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState(null);
   const [newComment, setNewComment] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const { userInfo } = useContext(UserContext);
@@ -17,12 +17,14 @@ const CommentSection = ({ postId }) => {
       const response = await fetch(`https://comment-service-w7ayogaiya-uc.a.run.app/comments?postId=${postId}`);
       if (response.ok) {
         const data = await response.json();
-        setComments(data);
+        setComments(data || []); // Ensure we always set an array
       } else {
         console.error('Failed to fetch comments');
+        setComments([]); // Set empty array on error
       }
     } catch (error) {
       console.error('Error fetching comments:', error);
+      setComments([]); // Set empty array on error
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +65,7 @@ const CommentSection = ({ postId }) => {
       <h3>Comments</h3>
       {isLoading ? (
         <p>Loading comments...</p>
-      ) : comments.length > 0 ? (
+      ) : comments && comments.length > 0 ? (
         comments.map((comment) => (
           <div key={comment.id} className="comment">
             <p><strong>{comment.username}</strong>: {comment.content}</p>
