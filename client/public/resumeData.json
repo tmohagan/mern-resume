@@ -69,7 +69,8 @@
       { "name": "CI/CD", "postId": "6689a7e8dce2349248e54a93" },
       { "name": "Docker", "postId": "667cc433d418a4bbdefa6407" },
       { "name": "Kubernetes", "postId": "668c71d1c553a42d6acc75d6" },
-      { "name": "AWS", "postId": "668c71a73f6043c38f1132080" }
+      { "name": "AWS", "postId": "668c71a73f6043c38f1132080" },
+      { "name": "Google Cloud Platform", "postId": "6690817f8f4b3f7469b67975" }
     ],
     "projects": [
       {
