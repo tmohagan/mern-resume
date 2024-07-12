@@ -17,14 +17,14 @@ const CommentSection = ({ postId }) => {
       const response = await fetch(`https://comment-service-w7ayogaiya-uc.a.run.app/comments?postId=${postId}`);
       if (response.ok) {
         const data = await response.json();
-        setComments(data || []); // Ensure we always set an array
+        setComments(data || []);
       } else {
         console.error('Failed to fetch comments');
-        setComments([]); // Set empty array on error
+        setComments([]);
       }
     } catch (error) {
       console.error('Error fetching comments:', error);
-      setComments([]); // Set empty array on error
+      setComments([]);
     } finally {
       setIsLoading(false);
     }
@@ -43,7 +43,7 @@ const CommentSection = ({ postId }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          postId,
+          postId: postId, 
           userId: userInfo.id,
           username: userInfo.username,
           content: newComment

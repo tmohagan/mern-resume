@@ -83,7 +83,7 @@ export default function PostPage() {
         </div>
       )}
       <div className="content" dangerouslySetInnerHTML={{ __html: postInfo.content }} />
-      <CommentSection postId={id} /> {/* Add this line */}
+      <CommentSection postId={id} />
     </div>
   );
 }
