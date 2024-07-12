@@ -23,7 +23,7 @@ export default function CreatePost() {
       });
       if (response.ok) {
         const projectsData = await response.json();
-        setProjects(projectsData);
+        setProjects(projectsData.projects || []);
       } else {
         console.error('Error fetching projects:', response.statusText);
       }
@@ -82,11 +82,15 @@ export default function CreatePost() {
         value={selectedProjects}
         onChange={ev => setSelectedProjects(Array.from(ev.target.selectedOptions, option => option.value))}
       >
-        {projects.map(project => (
-          <option key={project._id} value={project._id}>
-            {project.title}
-          </option>
-        ))}
+        {Array.isArray(projects) && projects.length > 0 ? (
+          projects.map(project => (
+            <option key={project._id} value={project._id}>
+              {project.title}
+            </option>
+          ))
+        ) : (
+          <option value="">No projects available</option>
+        )}
       </select>
       <Editor value={content} onChange={setContent} />
       <button style={{marginTop:'5px'}}>create post</button>
