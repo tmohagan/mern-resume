@@ -11,37 +11,51 @@ export default function EditPost() {
   const [redirect, setRedirect] = useState(false);
   const [projects, setProjects] = useState([]);
   const [selectedProjects, setSelectedProjects] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchPost();
     fetchProjects();
   }, [id]);
 
-  async function fetchPost() {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`);
-    if (response.ok) {
-      const postInfo = await response.json();
-      setTitle(postInfo.title);
-      setContent(postInfo.content);
-      setSummary(postInfo.summary);
-      setSelectedProjects(postInfo.projects ? postInfo.projects.map(project => project._id) : []);
+  useEffect(() => {
+    console.log('Projects:', projects);
+  }, [projects]);
 
+  async function fetchPost() {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`);
+      if (response.ok) {
+        const postInfo = await response.json();
+        setTitle(postInfo.title);
+        setContent(postInfo.content);
+        setSummary(postInfo.summary);
+        setSelectedProjects(postInfo.projects ? postInfo.projects.map(project => project._id) : []);
+      } else {
+        console.error('Error fetching post:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching post:', error);
     }
   }
 
   async function fetchProjects() {
+    setIsLoading(true);
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/project`, {
         credentials: 'include',
       });
       if (response.ok) {
         const projectsData = await response.json();
-        setProjects(projectsData);
+        console.log('Fetched projects:', projectsData);
+        setProjects(projectsData.projects || projectsData);
       } else {
         console.error('Error fetching projects:', response.statusText);
       }
     } catch (error) {
       console.error('Error fetching projects:', error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -56,13 +70,19 @@ export default function EditPost() {
     if (files?.[0]) {
       data.set('file', files?.[0]);
     }
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/post`, {
-      method: 'PUT',
-      body: data,
-      credentials: 'include',
-    });
-    if (response.ok) {
-      setRedirect(true);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/post`, {
+        method: 'PUT',
+        body: data,
+        credentials: 'include',
+      });
+      if (response.ok) {
+        setRedirect(true);
+      } else {
+        console.error('Error updating post:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error updating post:', error);
     }
   }
 
@@ -72,31 +92,39 @@ export default function EditPost() {
 
   return (
     <form onSubmit={updatePost}>
-      <input type="title"
-             placeholder={'Title'}
-             value={title}
-             onChange={ev => setTitle(ev.target.value)} />
-      <input type="summary"
-             placeholder={'Summary'}
-             value={summary}
-             onChange={ev => setSummary(ev.target.value)} />
-      <input type="file"
-             onChange={ev => setFiles(ev.target.files)} />
+      <input 
+        type="title"
+        placeholder={'Title'}
+        value={title}
+        onChange={ev => setTitle(ev.target.value)}
+      />
+      <input 
+        type="summary"
+        placeholder={'Summary'}
+        value={summary}
+        onChange={ev => setSummary(ev.target.value)}
+      />
+      <input 
+        type="file"
+        onChange={ev => setFiles(ev.target.files)}
+      />
       <select 
-  multiple
-  value={selectedProjects}
-  onChange={ev => setSelectedProjects(Array.from(ev.target.selectedOptions, option => option.value))}
->
-  {projects.length > 0 ? (
-    projects.map(project => (
-      <option key={project._id} value={project._id}>
-        {project.title}
-      </option>
-    ))
-  ) : (
-    <option value="">No projects available</option>
-  )}
-</select>
+        multiple
+        value={selectedProjects}
+        onChange={ev => setSelectedProjects(Array.from(ev.target.selectedOptions, option => option.value))}
+      >
+        {isLoading ? (
+          <option>Loading projects...</option>
+        ) : projects.length > 0 ? (
+          projects.map(project => (
+            <option key={project._id} value={project._id}>
+              {project.title}
+            </option>
+          ))
+        ) : (
+          <option value="">No projects available</option>
+        )}
+      </select>
       <Editor onChange={setContent} value={content} />
       <button style={{marginTop:'5px'}}>Update post</button>
     </form>

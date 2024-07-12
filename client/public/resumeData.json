@@ -59,7 +59,7 @@
       { "name": "SQL", "postId": "6672ff9b4f36148307da8842" }
     ],
     "technologies": [
-      { "name": "Linux", "postId": "668c9c489311d75d12760f1e" },
+      { "name": "Linux", "postId": "669083df8f4b3f7469b67a27" },
       { "name": "Maven", "postId": "668c714fc553a42d6acc75c6" },
       { "name": "Spring", "postId": "668c7120c553a42d6acc75b4" },
       { "name": "Micro Services", "postId": "668c712fc553a42d6acc75ba" },
@@ -68,9 +68,9 @@
       { "name": "Git", "postId": "668c7115c553a42d6acc75ae" },
       { "name": "CI/CD", "postId": "6689a7e8dce2349248e54a93" },
       { "name": "Docker", "postId": "667cc433d418a4bbdefa6407" },
-      { "name": "Kubernetes", "postId": "668c71d1c553a42d6acc75d6" },
-      { "name": "AWS", "postId": "668c71a73f6043c38f1132080" },
-      { "name": "Google Cloud Platform", "postId": "6690817f8f4b3f7469b67975" }
+      { "name": "Kubernetes", "postId": "669085a58f4b3f7469b67a56" },
+      { "name": "AWS", "postId": "66908530c2d3f1ce10c33236" },
+      { "name": "Google Cloud Platform", "postId": "6690838c8f4b3f7469b67a03" }
     ],
     "projects": [
       {
