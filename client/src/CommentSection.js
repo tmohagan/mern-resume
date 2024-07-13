@@ -43,8 +43,8 @@ const CommentSection = ({ postId }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          postID: postId, 
-          userID: userInfo.id,
+          postId: postId,
+          userId: userInfo.id,
           username: userInfo.username,
           content: newComment
         }),
