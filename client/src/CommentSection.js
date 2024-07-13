@@ -1,20 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from "./UserContext"; // Adjust this path as needed
 
-const CommentSection = ({ postId }) => {
+const CommentSection = ({ postID }) => {
   const [comments, setComments] = useState(null);
   const [newComment, setNewComment] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const { userInfo } = useContext(UserContext);
 
+
   useEffect(() => {
     fetchComments();
-  }, [postId]);
+  }, [postID]);
 
   const fetchComments = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`https://comment-service-w7ayogaiya-uc.a.run.app/comments?postId=${postId}`);
+      //const response = await fetch(`https://comment-service-w7ayogaiya-uc.a.run.app/comments/${postID}`);
+      const response = await fetch(`https://comment-service-w7ayogaiya-uc.a.run.app/comments/${postID}`);
       if (response.ok) {
         const data = await response.json();
         setComments(data || []);
@@ -43,7 +45,7 @@ const CommentSection = ({ postId }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          postId: postId,
+          postID: postID,
           userId: userInfo.id,
           username: userInfo.username,
           content: newComment
