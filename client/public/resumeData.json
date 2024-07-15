@@ -50,8 +50,7 @@
       }
     ],
     "skills": [
-      { "name": "JavaScript", "postId": "6672fe174f36148307da8828" },
-      { "name": "React", "postId": "6672feca4f36148307da883c" },
+      { "name": "Full Stack JavaScript (MERN)", "postId": "6672fe174f36148307da8828" },
       { "name": "Java", "postId": "6672fd304f36148307da881a" },
       { "name": "Python", "postId": "6672ff524f36148307da8840" },
       { "name": "Scala", "postId": "6672ff164f36148307da883e" },
@@ -64,7 +63,7 @@
       { "name": "Spring", "postId": "668c7120c553a42d6acc75b4" },
       { "name": "Micro Services", "postId": "668c712fc553a42d6acc75ba" },
       { "name": "MongoDB", "postId": "6673015a4f36148307da884e" },
-      { "name": "Test Automation", "postId": "668c71e2c553a42d6acc75dc" },
+      { "name": "Test Automation", "postId": "66908492c2d3f1ce10c33220" },
       { "name": "Git", "postId": "668c7115c553a42d6acc75ae" },
       { "name": "CI/CD", "postId": "6689a7e8dce2349248e54a93" },
       { "name": "Docker", "postId": "667cc433d418a4bbdefa6407" },
