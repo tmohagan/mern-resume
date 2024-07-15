@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import { formatDistanceToNow } from 'date-fns';
 
@@ -127,6 +128,7 @@ const CommentSection = ({ postID }) => {
   return (
     <div className="comment-section">
       <h3>Comments</h3>
+      {!userInfo && <Link to="/login">Please log in/register to leave a comment.</Link>}
       {isLoading ? (
         <p>Loading comments...</p>
       ) : comments && comments.length > 0 ? (
