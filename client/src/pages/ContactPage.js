@@ -7,7 +7,7 @@ export default function ContactPage() {
     email: "",
     message: "",
   });
-  const [buttonText, setButtonText] = useState("send");
+  const [buttonText, setButtonText] = useState("Send");
   const navigate = useNavigate();
 
   const handleChange = (ev) => {

@@ -42,7 +42,7 @@ export default function RegisterPage() {
 
   return (
     <form className="register" onSubmit={register}>
-      <h1>register</h1>
+      <h1>Register</h1>
 
       <input type="text"
              placeholder="username"
@@ -63,7 +63,7 @@ export default function RegisterPage() {
 
       {errorMessage && <div className="error-message">{errorMessage}</div>} 
 
-      <button type="submit">register</button>
+      <button type="submit">Register</button>
     </form>
   );
 }

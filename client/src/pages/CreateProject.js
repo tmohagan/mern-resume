@@ -63,7 +63,7 @@ export default function CreateProject() {
             onChange={(ev) => setDemo(ev.target.value)}
     />
       <Editor value={content} onChange={setContent} />
-      <button style={{marginTop:'5px'}}>create project</button>
+      <button style={{marginTop:'5px'}}>Create Project</button>
     </form>
   );
 }

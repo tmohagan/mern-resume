@@ -93,7 +93,7 @@ export default function CreatePost() {
         )}
       </select>
       <Editor value={content} onChange={setContent} />
-      <button style={{marginTop:'5px'}}>create post</button>
+      <button style={{marginTop:'5px'}}>Create Post</button>
     </form>
   );
 }

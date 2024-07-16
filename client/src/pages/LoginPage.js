@@ -39,7 +39,7 @@ export default function LoginPage() {
 
   return (
     <form className="login" onSubmit={login}>
-      <h1>login</h1>
+      <h1>Login</h1>
       <input 
         type="text" 
         placeholder="username" 
@@ -52,8 +52,8 @@ export default function LoginPage() {
         value={password} 
         onChange={(ev) => setPassword(ev.target.value)} 
       />
-      <button>login</button>
-      <p>don't have an account? <Link to="/register">register here</Link></p> 
+      <button>Login</button>
+      <p>Don't have an account? <Link to="/register">Register here</Link></p> 
     </form>
   );
 }

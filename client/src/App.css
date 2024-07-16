@@ -200,6 +200,14 @@ header nav a:hover {
     border-bottom: 1px solid #004499;
   }
   
+  .resume section > p:first-of-type {
+    margin-bottom: 0;
+  }
+  
+  .resume section > p:last-of-type {
+    margin-top: 0;
+  }
+  
   .resume .dates {
     font-style: italic;
     color: #666;

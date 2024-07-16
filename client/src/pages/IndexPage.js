@@ -32,12 +32,12 @@ export default function IndexPage() {
     return <div>Loading...</div>;
   }
 
-  const { name, contact, summary, experience, skills, technologies, projects, education } = resumeData;
+  const { name, contact, summary, summary2, experience, skills, technologies, projects, education } = resumeData;
 
   return (
     <div className="resume">
       <Header name={name} contact={contact} />
-      <Summary summary={summary} />
+      <Summary summary={summary} summary2={summary2} />
       <Experience experiences={experience} />
       <Skills title="Languages" skills={skills} />
       <Skills title="Technologies" skills={technologies} />
@@ -65,10 +65,12 @@ const Header = ({ name, contact }) => (
   </>
 );
 
-const Summary = ({ summary }) => (
+const Summary = ({ summary, summary2 }) => (
   <section>
     <h2>Summary</h2>
     <p>{summary}</p>
+    <br />
+    <p>{summary2}</p> 
   </section>
 );
 
@@ -84,6 +86,7 @@ const Experience = ({ experiences }) => (
           {exp.tasks.map((task, taskIndex) => (
             <li key={taskIndex}>
               <h4>{task.title}</h4>
+              <p>{task.title2}</p>
               <ul className="details">
                 {task.details.map((detail, detailIndex) => (
                   <li key={detailIndex}>{detail}</li>
@@ -92,6 +95,7 @@ const Experience = ({ experiences }) => (
             </li>
           ))}
         </ul>
+        
       </div>
     ))}
   </section>

@@ -126,7 +126,7 @@ export default function EditPost() {
         )}
       </select>
       <Editor onChange={setContent} value={content} />
-      <button style={{marginTop:'5px'}}>Update post</button>
+      <button style={{marginTop:'5px'}}>Update Post</button>
     </form>
   );
 }

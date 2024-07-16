@@ -66,7 +66,7 @@ export default function EditProject() {
             value={demo}
             onChange={(ev) => setDemo(ev.target.value)}/>
       <Editor onChange={setContent} value={content} />
-      <button style={{marginTop:'5px'}}>update project</button>
+      <button style={{marginTop:'5px'}}>Update Project</button>
     </form>
   );
 }

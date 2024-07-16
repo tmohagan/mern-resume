@@ -58,18 +58,18 @@ export default function Header() {
       <nav className={`menu ${isMenuOpen ? "open" : ""}`}>
         {username ? (
           <>
-            <Link to="/posts_index" onClick={toggleMenu}>skills</Link>
-            <Link to="/projects_index" onClick={toggleMenu}>projects</Link>
-            <Link to="/contact" onClick={toggleMenu}>contact</Link>
-            <Link to="/account" onClick={toggleMenu}>my profile</Link>
-            <Link to="/" onClick={logout}>logout</Link>
+            <Link to="/posts_index" onClick={toggleMenu}>Skills</Link>
+            <Link to="/projects_index" onClick={toggleMenu}>Projects</Link>
+            <Link to="/contact" onClick={toggleMenu}>Contact</Link>
+            <Link to="/account" onClick={toggleMenu}>My Profile</Link>
+            <Link to="/" onClick={logout}>Logout</Link>
           </>
         ) : (
           <>
-            <Link to="/posts_index" onClick={toggleMenu}>skills</Link>
-            <Link to="/projects_index" onClick={toggleMenu}>projects</Link>
-            <Link to="/contact" onClick={toggleMenu}>contact</Link>
-            <Link to="/login" onClick={toggleMenu}>login</Link>
+            <Link to="/posts_index" onClick={toggleMenu}>Skills</Link>
+            <Link to="/projects_index" onClick={toggleMenu}>Projects</Link>
+            <Link to="/contact" onClick={toggleMenu}>Contact</Link>
+            <Link to="/login" onClick={toggleMenu}>Login</Link>
           </>
         )}
       </nav>

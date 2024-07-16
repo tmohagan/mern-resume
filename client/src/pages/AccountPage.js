@@ -56,7 +56,7 @@ export default function AccountPage() {
 
   return (
     <form onSubmit={updateProfile}>
-      <h1>{userInfo?.username} profile</h1>
+      <h1>{userInfo?.username} Profile</h1>
       <label htmlFor="nameInput">Full Name:</label>
       <input
         type="text"
@@ -66,7 +66,7 @@ export default function AccountPage() {
         onChange={(ev) => setName(ev.target.value)}
       />
       <button type="submit" style={{ marginTop: "5px" }}>
-        update profile
+        Update Profile
       </button>
     </form>
   );
