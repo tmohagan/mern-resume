@@ -86,7 +86,6 @@ const Experience = ({ experiences }) => (
           {exp.tasks.map((task, taskIndex) => (
             <li key={taskIndex}>
               <h4>{task.title}</h4>
-              <p>{task.title2}</p>
               <ul className="details">
                 {task.details.map((detail, detailIndex) => (
                   <li key={detailIndex}>{detail}</li>
