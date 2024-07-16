@@ -18,7 +18,7 @@ const CommentSection = ({ postID }) => {
   const fetchComments = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`https://comment-service-w7ayogaiya-uc.a.run.app/comments/${postID}`);
+      const response = await fetch(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments/${postID}`);
       if (response.ok) {
         const data = await response.json();
         setComments(data || []);
@@ -41,14 +41,14 @@ const CommentSection = ({ postID }) => {
       return;
     }
     try {
-      const response = await fetch('https://comment-service-w7ayogaiya-uc.a.run.app/comments', {
+      const response = await fetch(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           postID: postID,
-          userID: userInfo.id, // This is the ObjectId from the main site
+          userID: userInfo.id,
           username: userInfo.username,
           content: newComment
         }),
@@ -76,14 +76,14 @@ const CommentSection = ({ postID }) => {
 
   const handleSaveEdit = async () => {
     try {
-      const response = await fetch(`https://comment-service-w7ayogaiya-uc.a.run.app/comments/${editingComment.id}`, {
+      const response = await fetch(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/${editingComment.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           content: editedContent,
-          userID: userInfo.id, // Include this for verification on the server side
+          userID: userInfo.id,
         }),
       });
       if (response.ok) {
@@ -101,13 +101,13 @@ const CommentSection = ({ postID }) => {
   const handleDelete = async (commentId) => {
     if (window.confirm('Are you sure you want to delete this comment?')) {
       try {
-        const response = await fetch(`https://comment-service-w7ayogaiya-uc.a.run.app/comments/${commentId}`, {
+        const response = await fetch(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments/${commentId}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            userID: userInfo.id, // Include this for verification on the server side
+            userID: userInfo.id,
           }),
         });
         if (response.ok) {
