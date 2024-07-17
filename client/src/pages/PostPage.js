@@ -48,7 +48,6 @@ export default function PostPage() {
   return (
     <div className="post-page">
       <h1>{postInfo.title}</h1>
-      <h1>POST ID FROM DATABASE: {postInfo._id}</h1>
       <time>{formatISO9075(new Date(postInfo.createdAt))}</time>
       <div className="author">by @{postInfo.author.username}</div>
       {userInfo?.id === postInfo.author._id && (
