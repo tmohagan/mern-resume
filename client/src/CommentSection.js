@@ -24,6 +24,9 @@ const CommentSection = ({ postID }) => {
         setComments(data || []);
       } else {
         console.error('Failed to fetch comments');
+        const text = await response.text();
+        console.error('Response status:', response.status);
+        console.error('Response text:', text);
         setComments([]);
       }
     } catch (error) {
