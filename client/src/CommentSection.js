@@ -101,7 +101,7 @@ const CommentSection = ({ postID }) => {
       console.error('Error updating comment:', error);
     }
   };
-
+  
   const handleDelete = async (commentId) => {
     if (window.confirm('Are you sure you want to delete this comment?')) {
       try {
