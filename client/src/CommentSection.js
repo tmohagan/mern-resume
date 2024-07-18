@@ -15,6 +15,7 @@ const CommentSection = ({ postID }) => {
     fetchComments();
   }, [postID]);
 
+  
   const fetchComments = async () => {
     setIsLoading(true);
     try {
@@ -79,7 +80,7 @@ const CommentSection = ({ postID }) => {
 
   const handleSaveEdit = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/${editingComment.id}`, {
+      const response = await fetch(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments/${editingComment.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
