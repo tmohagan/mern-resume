@@ -100,7 +100,7 @@ app.post('/login', async (req, res) => {
     const userDoc = await User.findOne({ username });
 
     if (!userDoc) {
-      return res.status(400).json({error: 'Wrong credentials'});
+      return res.status(400).json({ error: 'Wrong credentials' });
     }
 
     const passOk = bcrypt.compareSync(password, userDoc.password);
@@ -122,7 +122,7 @@ app.post('/login', async (req, res) => {
         });
       });
     } else {
-      res.status(400).json({error: 'Wrong credentials'});
+      res.status(400).json({ error: 'Wrong credentials' });
     }
   } catch (error) {
     console.error('Error during login:', error);
@@ -476,14 +476,11 @@ app.get('/project', async (req, res) => {
 app.get('/project/:id', async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
   const {id} = req.params;
-  console.log(`Fetching project with id: ${id}`);
   try {
     const projectDoc = await Project.findById(id).populate('author', ['username']);
     if (!projectDoc) {
-      console.log(`Project with id ${id} not found`);
       return res.status(404).json({ message: 'Project not found' });
     }
-    console.log(`Project found: ${projectDoc._id}`);
     res.json(projectDoc);
   } catch (error) {
     console.error('Error fetching project:', error);
