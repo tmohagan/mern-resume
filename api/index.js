@@ -25,7 +25,8 @@ const allowedOrigins = [
   'https://www.tim-ohagan.com',
   'http://localhost:3000',
   'https://java-thumbnail.onrender.com',
-  "https://commentservice-0-0-1-snapshot.onrender.com"
+  "https://commentservice-0-0-1-snapshot.onrender.com",
+  "https://github.com",
 ];
 
 const corsOptions = {
@@ -99,7 +100,7 @@ app.post('/login', async (req, res) => {
     const userDoc = await User.findOne({ username });
 
     if (!userDoc) {
-      return res.status(400).json('Wrong credentials');
+      return res.status(400).json({error: 'Wrong credentials'});
     }
 
     const passOk = bcrypt.compareSync(password, userDoc.password);
@@ -121,7 +122,7 @@ app.post('/login', async (req, res) => {
         });
       });
     } else {
-      res.status(400).json('Wrong credentials');
+      res.status(400).json({error: 'Wrong credentials'});
     }
   } catch (error) {
     console.error('Error during login:', error);
@@ -420,7 +421,7 @@ app.post('/project', uploadMiddleware.single('file'), async (req,res) => {
   });
 });
 
-app.put('/project',uploadMiddleware.single('file'), async (req,res) => {
+app.put('/project', uploadMiddleware.single('file'), async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
   let imageUrl = null;
   if (req.file) {
@@ -429,25 +430,30 @@ app.put('/project',uploadMiddleware.single('file'), async (req,res) => {
   }
 
   const {token} = req.cookies;
-  jwt.verify(token, secret, {}, async (err,info) => {
+  jwt.verify(token, secret, {}, async (err, info) => {
     if (err) throw err;
-    const {id,title,summary,content, demo} = req.body;
+    const {id, title, summary, content, demo} = req.body;
     const projectDoc = await Project.findById(id);
+    if (!projectDoc) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
     const isAuthor = JSON.stringify(projectDoc.author) === JSON.stringify(info.id);
     if (!isAuthor) {
-      return res.status(400).json('you are not the author');
+      return res.status(403).json({ error: 'You are not the author' });
     }
-    await projectDoc.updateOne({
+    
+    const updateData = {
       title,
       summary,
       content,
       cover: imageUrl ? imageUrl : projectDoc.cover,
       demo,
-    });
+    };
 
-    res.json(projectDoc);
+    const updatedProject = await Project.findByIdAndUpdate(id, updateData, { new: true });
+
+    res.json(updatedProject);
   });
-
 });
 
 app.get('/project', async (req, res) => {
@@ -470,9 +476,23 @@ app.get('/project', async (req, res) => {
 app.get('/project/:id', async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
   const {id} = req.params;
-  const projectDoc = await Project.findById(id).populate('author', ['username']);
-  res.json(projectDoc);
-})
+  console.log(`Fetching project with id: ${id}`);
+  try {
+    const projectDoc = await Project.findById(id).populate('author', ['username']);
+    if (!projectDoc) {
+      console.log(`Project with id ${id} not found`);
+      return res.status(404).json({ message: 'Project not found' });
+    }
+    console.log(`Project found: ${projectDoc._id}`);
+    res.json(projectDoc);
+  } catch (error) {
+    console.error('Error fetching project:', error);
+    if (error.name === 'CastError') {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 app.delete('/project/:id', async (req, res) => {
   try {
@@ -497,7 +517,7 @@ app.delete('/project/:id', async (req, res) => {
       if (projectDoc.cover) {
         const imageUrlParts = projectDoc.cover.split('/');
         const imageName = imageUrlParts[imageUrlParts.length - 1];
-
+    
         const client = new S3Client({
           region: 'us-east-2',
           credentials: {
@@ -511,7 +531,10 @@ app.delete('/project/:id', async (req, res) => {
         }));
       }
 
-      await Project.findByIdAndDelete(id); 
+      const deleteResult = await Project.findByIdAndDelete(id); 
+      if (!deleteResult) {
+        return res.status(404).json({ error: 'Project not found or already deleted' });
+      }
 
       res.json({ success: true });
     });
