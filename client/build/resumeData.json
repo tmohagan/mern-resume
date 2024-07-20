@@ -1,0 +1,110 @@
+{
+    "name": "Tim OHagan",
+    "contact": {
+      "email": "tmohagan@gmail.com",
+      "phone": "(773) 270-1142",
+      "website": "https://www.tim-ohagan.com/",
+      "linkedin": "https://www.linkedin.com/in/timothy-ohagan/",
+      "github": "https://github.com/tmohagan"
+    },
+    "summary": "Innovative and detail-oriented software engineering professional with light full-stack experience developing ReactJS UI components and API components built on a Spring framework at Walmart Global Tech. Well-versed in Scrum and Agile methodology, with experience building full-scale applications in the healthcare and accounting spaces. Strategic professional adept at planning projects and identifying areas for optimization.",
+    "summary2": "In addition to my work at Walmart Global Tech, I actively pursue personal projects to further expand my full-stack capabilities and deepen my understanding of the software development lifecycle.",
+    "experience": [
+      {
+        "company": "WALMART GLOBAL TECH",
+        "position": "Software Engineer II",
+        "dates": "2023-PRESENT",
+        "tasks": [
+          {
+            "title": "Software engineer on Walmart’s health clinic patient communications project and Walmart’s Social Determinants of Health (SDOH) project, including contributing to development of Java Spring RESTful API middleware service. ",
+            "details": [
+              "Participated in planning of SDOH member experience workflow.",
+              "Contributed to development of ReactJS modules.",
+              "Collaborated with QE team to implement automated tests using JavaScript.",
+              "Planned and implemented new middleware service."
+            ]
+          }
+        ]
+      },
+      {
+        "company": "WALMART GLOBAL TECH",
+        "position": "Software Engineer Intern",
+        "dates": "2023",
+        "tasks": [
+          {
+            "title": "Served as developer on Financial Technology and Accounting team.",
+            "details": [
+              "Gained experience working in Agile and Scrum environment.",
+              "Learned fundamentals Walmart’s CI/CD pipeline.",
+              "Participated in full software development lifecycle.",
+              "Collaborated with team proficient in JavaScript, React, Node, Cosmos DB, Scala, and Kotlin to adopt and implement best practices."
+            ]
+          }
+        ]
+      },
+      {
+        "company": "OTHER PROFESSIONAL EXPERIENCE",
+        "position": "Various Positions",
+        "dates": "2006-2023",
+        "tasks": [
+          {
+            "title": "Worked in Retail Managment and Whosale Industry",
+            "details": [
+              "Progressive career advancement within the retail industry, culminating in leadership roles as Assistant Store Manager and Department Manager at Walmart (2018-2023).",
+              "Consistently exceeded performance expectations, driving sales growth and fostering positive customer experiences.",
+              "Proven ability to lead and motivate teams, resolve complex issues, and ensure operational efficiency.",
+              "Prior to retail management, gained valuable experience in various roles within a housewares wholesale company, including operations coordination, buying, product management, and product development (2006-2018)."
+            ]
+          }
+        ]
+      }
+    ],
+    "skills": [
+      { "name": "Full Stack JavaScript (MERN)", "postId": "6672fe174f36148307da8828" },
+      { "name": "Java", "postId": "6672fd304f36148307da881a" },
+      { "name": "Python", "postId": "6672ff524f36148307da8840" },
+      { "name": "Scala", "postId": "6672ff164f36148307da883e" },
+      { "name": "Go", "postId": "668c70d0c553a42d6acc75a2" },
+      { "name": "SQL", "postId": "6672ff9b4f36148307da8842" },
+      { "name": "Kotlin", "postId": "66957f456a4b5183f526dece" }
+    ],
+    "technologies": [
+      { "name": "Linux", "postId": "669083df8f4b3f7469b67a27" },
+      { "name": "Micro Services", "postId": "668c712fc553a42d6acc75ba" },
+      { "name": "Maven", "postId": "668c714fc553a42d6acc75c6" },
+      { "name": "Spring", "postId": "668c7120c553a42d6acc75b4" },
+      { "name": "MongoDB", "postId": "6673015a4f36148307da884e" },
+      { "name": "Test Automation", "postId": "66908492c2d3f1ce10c33220" },
+      { "name": "Git", "postId": "668c7115c553a42d6acc75ae" },
+      { "name": "CI/CD", "postId": "6689a7e8dce2349248e54a93" },
+      { "name": "AWS", "postId": "66908530c2d3f1ce10c33236" },
+      { "name": "Docker", "postId": "667cc433d418a4bbdefa6407" },
+      { "name": "Google Cloud Platform", "postId": "6690838c8f4b3f7469b67a03" },
+      { "name": "Kubernetes", "postId": "669085a58f4b3f7469b67a56" }
+    ],
+    "projects": [
+      {
+        "title": "tim-ohagan.com (this site)",
+        "projectId": "6673854c4ae6fd43d7f797ac"
+      },
+      {
+        "title": "Python - Sentiment Analysis",
+        "projectId": "667c4a5ab3f6a3d01abbaaad"
+      },
+      {
+        "title": "Java - Image Resizer",
+        "projectId": "667cc51ad418a4bbdefa640d"
+      },
+      {
+        "title": "Go - Comment Service",
+        "projectId": "668f3e056acfbd008896e5bf"
+      }
+    ],
+    "education": [
+      {
+        "institution": "SOUTHERN NEW HAMPSHIRE UNIVERSITY",
+        "degree": "BACHELOR OF SCIENCE IN COMPUTER SCIENCE",
+        "dates": "NOVEMBER 2023"
+      }
+    ]
+  }
