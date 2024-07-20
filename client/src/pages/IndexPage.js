@@ -6,18 +6,18 @@ export default function IndexPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("/resumeData.json")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to load resume data");
-        }
-        return response.json();
-      })
-      .then((data) => setResumeData(data))
-      .catch((error) => {
+    const fetchResumeData = async () => {
+      try {
+        const response = await fetch("/resumeData.json"); // Fetch directly from root
+        const data = await response.json();
+        setResumeData(data);
+      } catch (error) {
         console.error("Error loading resume data:", error);
         setError("Failed to load resume data. Please try again later.");
-      });
+      }
+    };
+
+    fetchResumeData();
   }, []);
 
   if (error) {

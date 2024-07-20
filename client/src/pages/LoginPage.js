@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { UserContext } from "../UserContext";
+import api from '../api';
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -8,28 +9,14 @@ export default function LoginPage() {
   const [redirect, setRedirect] = useState(false);
   const { setUserInfo } = useContext(UserContext);
 
-  const login = async (ev) => {  
+  const login = async (ev) => {
     ev.preventDefault();
-
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
-        method: "POST",
-        body: JSON.stringify({ username, password }),
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
-
-      if (response.ok) {
-        const userInfo = await response.json();
-        setUserInfo(userInfo);
-        setRedirect(true);
-      } else {
-        const errorData = await response.json();
-        alert(errorData.message || "wrong credentials");
-      }
+      const response = await api.post('/login', { username, password });
+      setUserInfo(response.data);
+      setRedirect(true);
     } catch (error) {
-      alert("an error occurred. please try again.");
-      console.error(error);
+      alert(error.response?.data?.message || "An error occurred. Please try again.");
     }
   };
 

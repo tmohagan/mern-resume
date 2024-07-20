@@ -3,6 +3,7 @@ import {useNavigate, useParams, Link} from "react-router-dom";
 import {formatISO9075} from "date-fns";
 import {UserContext} from "../UserContext";
 import Image from "../Image.jsx";
+import api from '../api';
 
 export default function ProjectPage() {
   const [projectInfo,setProjectInfo] = useState(null);
@@ -11,11 +12,12 @@ export default function ProjectPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/project/${id}`)
+    api.get(`/project/${id}`)
       .then(response => {
-        response.json().then(projectInfo => {
-          setProjectInfo(projectInfo);
-        });
+        setProjectInfo(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching project:', error);
       });
   }, [id]);
 
@@ -23,19 +25,8 @@ export default function ProjectPage() {
     const confirmDelete = window.confirm("Are you sure you want to delete this project?");
     if (confirmDelete) {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/project/${id}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        });
-  
-        if (response.ok) {
-          navigate('/');
-        } else {
-          console.error('Error deleting project:', response.statusText);
-        }
+        await api.delete(`/project/${id}`);
+        navigate('/');
       } catch (error) {
         console.error('Error deleting project:', error);
       }

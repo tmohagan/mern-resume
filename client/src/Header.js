@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
+import api from './api';
 
 export default function Header() {
   const { userInfo, setUserInfo } = useContext(UserContext);
@@ -10,31 +11,22 @@ export default function Header() {
 
   useEffect(() => {
     if (username) {
-      fetch(`${process.env.REACT_APP_API_URL}/profile`, { credentials: "include" })
+      api.get('/profile')
         .then(response => {
-          if (!response.ok) {
-            if (response.status === 401) {
-              setUserInfo(null);
-              throw new Error("Unauthorized");
-            }
-            throw new Error(`Profile fetch failed: ${response.status}`);
-          }
-          return response.json();
+          setUserInfo(response.data);
         })
-        .then(setUserInfo)
         .catch(error => {
-          console.error("Profile error:", error.message);
+          if (error.response && error.response.status === 401) {
+            setUserInfo(null);
+          }
+          console.error("Profile error:", error);
         });
     }
-  }, [username]);
+  }, [username, setUserInfo]);
 
-  const logout = async (event) => {
-    event.preventDefault();
+  const logout = async () => {
     try {
-      await fetch(`${process.env.REACT_APP_API_URL}/logout`, {
-        credentials: "include",
-        method: "POST",
-      });
+      await api.post('/logout');
       setUserInfo(null);
       localStorage.removeItem("token");
       navigate("/");

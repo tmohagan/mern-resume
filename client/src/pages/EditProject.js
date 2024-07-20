@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {Navigate, useParams} from "react-router-dom";
 import Editor from "../Editor";
+import api from '../api';
 
 export default function EditProject() {
   const {id} = useParams();
@@ -12,14 +13,16 @@ export default function EditProject() {
   const [redirect,setRedirect] = useState(false);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/project/`+id)
+    api.get(`/project/${id}`)
       .then(response => {
-        response.json().then(projectInfo => {
-          setTitle(projectInfo.title);
-          setContent(projectInfo.content);
-          setSummary(projectInfo.summary);
-          setDemo(projectInfo.demo);
-        });
+        const projectInfo = response.data;
+        setTitle(projectInfo.title);
+        setContent(projectInfo.content);
+        setSummary(projectInfo.summary);
+        setDemo(projectInfo.demo);
+      })
+      .catch(error => {
+        console.error('Error fetching project:', error);
       });
   }, [id]);
 
@@ -34,13 +37,11 @@ export default function EditProject() {
     if (files?.[0]) {
       data.set('file', files?.[0]);
     }
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/project`, {
-      method: 'PUT',
-      body: data,
-      credentials: 'include',
-    });
-    if (response.ok) {
+    try {
+      await api.put('/project', data);
       setRedirect(true);
+    } catch (error) {
+      console.error('Error updating project:', error);
     }
   }
 

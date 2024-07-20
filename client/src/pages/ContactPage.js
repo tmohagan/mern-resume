@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from '../api';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -18,17 +19,8 @@ export default function ContactPage() {
     ev.preventDefault();
     setButtonText("sending...");
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/contact`, {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (response.ok) {
-        navigate("/");
-      } else {
-        alert("Failed to send message");
-      }
+      await api.post('/contact', formData);
+      navigate("/");
     } catch (error) {
       alert("An error occurred while sending the message.");
       console.error(error);

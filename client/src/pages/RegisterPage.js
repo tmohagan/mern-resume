@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
+import api from '../api';
 
 export default function RegisterPage() {
   const [username, setUsername] = useState('');
@@ -15,24 +16,14 @@ export default function RegisterPage() {
       setErrorMessage('passwords do not match');
       return;
     }
-
+  
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/register`, {
-        method: 'POST',
-        body: JSON.stringify({ username, password, confirmPassword }),
-        headers: { 'Content-Type': 'application/json' },
-      });
-
-      if (response.ok) {
-        alert('registration successful');
-        setRedirect(true);
-      } else {
-        const errorData = await response.json();
-        setErrorMessage(errorData.details || 'registration failed');
-      }
+      await api.post('/register', { username, password, confirmPassword });
+      alert('registration successful');
+      setRedirect(true);
     } catch (error) {
       console.log('Error registering:', error);
-      setErrorMessage('an error occurred during registration');
+      setErrorMessage(error.response?.data?.details || 'an error occurred during registration');
     }
   }
 

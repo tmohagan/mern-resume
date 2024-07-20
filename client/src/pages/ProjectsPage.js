@@ -2,6 +2,7 @@ import Project from "../Project";
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../UserContext";
+import api from '../api';
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState([]);
@@ -10,11 +11,13 @@ export default function ProjectsPage() {
   const { userInfo } = useContext(UserContext);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/project?page=${currentPage}&limit=10`)
-      .then(response => response.json())
-      .then(data => {
-        setProjects(data.projects);
-        setTotalPages(Math.ceil(data.totalProjects / 10));
+    api.get(`/project?page=${currentPage}&limit=10`)
+      .then(response => {
+        setProjects(response.data.projects);
+        setTotalPages(Math.ceil(response.data.totalProjects / 10));
+      })
+      .catch(error => {
+        console.error('Error fetching projects:', error);
       });
   }, [currentPage]);
 

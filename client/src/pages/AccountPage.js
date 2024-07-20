@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
+import api from '../api';
 
 export default function AccountPage() {
   const [redirect, setRedirect] = useState(false);
@@ -11,13 +12,8 @@ export default function AccountPage() {
     const fetchUserData = async () => {
       if (userInfo?.id) {
         try {
-          const response = await fetch(`${process.env.REACT_APP_API_URL}/user/${userInfo.id}`);
-          if (response.ok) {
-            const data = await response.json();
-            setName(data.name);
-          } else {
-            console.error("Error fetching user data:", response.status, response.statusText);
-          }
+          const response = await api.get(`/user/${userInfo.id}`);
+          setName(response.data.name);
         } catch (error) {
           console.error("Error fetching user:", error);
         }
@@ -30,21 +26,11 @@ export default function AccountPage() {
     ev.preventDefault();
     
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/user`, {
-        method: "PUT",
-        body: JSON.stringify({
-          name,
-          id: userInfo.id.toString(),
-        }),
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
+      await api.put('/user', {
+        name,
+        id: userInfo.id.toString(),
       });
-
-      if (response.ok) {
-        setRedirect(true);
-      } else {
-        console.error("Error updating profile:", response.status, response.statusText);
-      }
+      setRedirect(true);
     } catch (error) {
       console.error("Error updating profile:", error);
     } 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import Editor from "../Editor";
+import api from '../api';
 
 export default function EditPost() {
   const { id } = useParams();
@@ -22,18 +23,15 @@ export default function EditPost() {
     console.log('Projects:', projects);
   }, [projects]);
 
+
   async function fetchPost() {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`);
-      if (response.ok) {
-        const postInfo = await response.json();
-        setTitle(postInfo.title);
-        setContent(postInfo.content);
-        setSummary(postInfo.summary);
-        setSelectedProjects(postInfo.projects ? postInfo.projects.map(project => project._id) : []);
-      } else {
-        console.error('Error fetching post:', response.statusText);
-      }
+      const response = await api.get(`/post/${id}`);
+      const postInfo = response.data;
+      setTitle(postInfo.title);
+      setContent(postInfo.content);
+      setSummary(postInfo.summary);
+      setSelectedProjects(postInfo.projects ? postInfo.projects.map(project => project._id) : []);
     } catch (error) {
       console.error('Error fetching post:', error);
     }
@@ -42,16 +40,10 @@ export default function EditPost() {
   async function fetchProjects() {
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/project`, {
-        credentials: 'include',
-      });
-      if (response.ok) {
-        const projectsData = await response.json();
-        console.log('Fetched projects:', projectsData);
-        setProjects(projectsData.projects || projectsData);
-      } else {
-        console.error('Error fetching projects:', response.statusText);
-      }
+      const response = await api.get('/project');
+      const projectsData = response.data;
+      console.log('Fetched projects:', projectsData);
+      setProjects(projectsData.projects || projectsData);
     } catch (error) {
       console.error('Error fetching projects:', error);
     } finally {
@@ -68,19 +60,11 @@ export default function EditPost() {
     data.set('id', id);
     data.set('projects', selectedProjects.join(','));
     if (files?.[0]) {
-      data.set('file', files?.[0]);
+      data.set('file', files[0]);
     }
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/post`, {
-        method: 'PUT',
-        body: data,
-        credentials: 'include',
-      });
-      if (response.ok) {
-        setRedirect(true);
-      } else {
-        console.error('Error updating post:', response.statusText);
-      }
+      await api.put('/post', data);
+      setRedirect(true);
     } catch (error) {
       console.error('Error updating post:', error);
     }

@@ -4,6 +4,7 @@ import { formatISO9075 } from "date-fns";
 import { UserContext } from "../UserContext";
 import Image from "../Image.jsx";
 import CommentSection from "../CommentSection"; // Add this import
+import api from '../api';
 
 export default function PostPage() {
   const [postInfo, setPostInfo] = useState(null);
@@ -12,11 +13,12 @@ export default function PostPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/post/${id}`)
+    api.get(`/post/${id}`)
       .then(response => {
-        response.json().then(postInfo => {
-          setPostInfo(postInfo);
-        });
+        setPostInfo(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching post:', error);
       });
   }, [id]);
 
@@ -24,19 +26,8 @@ export default function PostPage() {
     const confirmDelete = window.confirm("Are you sure you want to delete this post?");
     if (confirmDelete) {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/post/${id}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        });
-  
-        if (response.ok) {
-          navigate('/');
-        } else {
-          console.error('Error deleting post:', response.statusText);
-        }
+        await api.delete(`/post/${id}`);
+        navigate('/');
       } catch (error) {
         console.error('Error deleting post:', error);
       }

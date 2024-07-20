@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from '../api';
 
 function SentimentAnalyzer() {
   const [text, setText] = useState('');
@@ -20,14 +21,15 @@ function SentimentAnalyzer() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(`${process.env.REACT_APP_PYTHON_SENTIMENT_API_URL}/analyze`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text }),
-    });
-
-    const data = await response.json();
-    setSentiment(data.sentiment);
+    try {
+      const response = await api.post('/analyze', { text }, {
+        baseURL: process.env.REACT_APP_PYTHON_SENTIMENT_API_URL
+      });
+      setSentiment(response.data.sentiment);
+    } catch (error) {
+      console.error('Error analyzing sentiment:', error);
+      // You might want to set an error state here and display it to the user
+    }
   };
 
   return (

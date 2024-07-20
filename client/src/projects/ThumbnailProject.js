@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from '../api';
 
 function ThumbnailProject() {
   const [imageUrl, setImageUrl] = useState('');
@@ -9,12 +10,19 @@ function ThumbnailProject() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
 
     try {
-        const response = await fetch(`${process.env.REACT_APP_JAVA_THUMBNAIL_API_URL}/generate?imageUrl=${encodeURIComponent(imageUrl)}&width=${width}&height=${height}`);
-      const data = await response.text();
-      setThumbnailData(data);
-      setError(null);
+      const response = await api.get('/generate', {
+        baseURL: process.env.REACT_APP_JAVA_THUMBNAIL_API_URL,
+        params: {
+          imageUrl: encodeURIComponent(imageUrl),
+          width,
+          height
+        },
+        responseType: 'text'
+      });
+      setThumbnailData(response.data);
     } catch (err) {
       setError("Error generating thumbnail. Please check the URL and server.");
       console.error(err);

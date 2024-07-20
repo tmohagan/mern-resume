@@ -2,6 +2,7 @@ import 'react-quill/dist/quill.snow.css';
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import Editor from "../Editor";
+import api from '../api';
 
 export default function CreatePost() {
   const [title, setTitle] = useState('');
@@ -18,15 +19,9 @@ export default function CreatePost() {
 
   async function fetchProjects() {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/project`, {
-        credentials: 'include',
-      });
-      if (response.ok) {
-        const projectsData = await response.json();
-        setProjects(projectsData.projects || []);
-      } else {
-        console.error('Error fetching projects:', response.statusText);
-      }
+      const response = await api.get('/project');
+      const projectsData = response.data;
+      setProjects(projectsData.projects || []);
     } catch (error) {
       console.error('Error fetching projects:', error);
     }
@@ -34,28 +29,18 @@ export default function CreatePost() {
 
   async function createNewPost(ev) {
     ev.preventDefault();
-
+    const data = new FormData();
+    data.set('title', title);
+    data.set('summary', summary);
+    data.set('content', content);
+    data.set('projects', selectedProjects.join(','));
+    if (files.length > 0) {
+      data.set('file', files[0]);
+    }
+  
     try {
-      const data = new FormData();
-      data.set('title', title);
-      data.set('summary', summary);
-      data.set('content', content);
-      data.set('projects', selectedProjects.join(','));
-      if (files.length > 0) {
-        data.set('file', files[0]);
-      }
-
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/post`, {
-        method: 'POST',
-        body: data,
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        setRedirect(true);
-      } else {
-        console.error('Error creating post:', response.statusText); 
-      }
+      await api.post('/post', data);
+      setRedirect(true);
     } catch (error) {
       console.error('Error creating post:', error);
     }
