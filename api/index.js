@@ -13,6 +13,8 @@ const uploadMiddleware = multer({ dest: '/tmp' });
 const {S3Client, PutObjectCommand, DeleteObjectCommand} = require('@aws-sdk/client-s3');
 const fs = require('fs');
 const nodemailer = require('nodemailer');
+const axios = require('axios');
+const FormData = require('form-data');
 
 require('dotenv').config();
 const app = express();
@@ -47,7 +49,26 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
+async function resizeImage(buffer) {
+  const form = new FormData();
+  form.append('image', buffer, { filename: 'image.jpg' });
+
+  try {
+    const response = await axios.post('https://image-resizer-latest.onrender.com/resize', form, {
+      headers: form.getHeaders(),
+      responseType: 'arraybuffer'
+    });
+    return Buffer.from(response.data);
+  } catch (error) {
+    console.error('Error resizing image:', error);
+    throw error;
+  }
+}
+
 async function uploadToS3(path, originalFilename, mimetype) {
+  const fileBuffer = fs.readFileSync(path);
+  const resizedBuffer = await resizeImage(fileBuffer);
+
   const client = new S3Client({
     region: 'us-east-2',
     credentials: {
@@ -60,9 +81,9 @@ async function uploadToS3(path, originalFilename, mimetype) {
   const newFilename = Date.now() + '.' + ext;
   const data = await client.send(new PutObjectCommand({
     Bucket: bucket,
-    Body: fs.readFileSync(path),
+    Body: resizedBuffer,
     Key: newFilename,
-    ContentType: mimetype,
+    ContentType: 'image/jpeg',
     ACL: 'public-read',
   }));
   return `https://${bucket}.s3.amazonaws.com/${newFilename}`;
