@@ -58,7 +58,8 @@ async function resizeImage(buffer) {
     console.log('Attempting to resize image...');
     const response = await axios.post('https://image-resizer-latest.onrender.com/resize', form, {
       headers: form.getHeaders(),
-      responseType: 'arraybuffer'
+      responseType: 'arraybuffer',
+      timeout: 60000 // 60 seconds timeout
     });
     console.log('Image resized successfully');
     return Buffer.from(response.data);

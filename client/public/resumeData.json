@@ -7,7 +7,7 @@
       "linkedin": "https://www.linkedin.com/in/timothy-ohagan/",
       "github": "https://github.com/tmohagan"
     },
-    "summary": "Innovative and detail-oriented software engineering professional with light full-stack experience developing ReactJS UI components and API components built on a Spring framework at Walmart Global Tech. Well-versed in Scrum and Agile methodology, with experience building full-scale applications in the healthcare and accounting spaces. Strategic professional adept at planning projects and identifying areas for optimization.",
+    "summary": "Innovative and detail-oriented software engineering professional with light full-stack experience in developing ReactJS UI components and API components built on a Spring framework. Well-versed in Scrum and Agile methodology, building full-scale applications in the healthcare and accounting spaces. Strategic professional adept at planning projects and identifying ways to improve.",
     "summary2": "In addition to my work at Walmart Global Tech, I actively pursue personal projects to further expand my full-stack capabilities and deepen my understanding of the software development lifecycle.",
     "experience": [
       {
@@ -34,7 +34,7 @@
           {
             "title": "Served as developer on Financial Technology and Accounting team.",
             "details": [
-              "Gained experience working in Agile and Scrum environment.",
+              "Gained experience in Agile and Scrum environment.",
               "Learned fundamentals Walmart’s CI/CD pipeline.",
               "Participated in full software development lifecycle.",
               "Collaborated with team proficient in JavaScript, React, Node, Cosmos DB, Scala, and Kotlin to adopt and implement best practices."
@@ -66,7 +66,8 @@
       { "name": "Scala", "postId": "6672ff164f36148307da883e" },
       { "name": "Go", "postId": "668c70d0c553a42d6acc75a2" },
       { "name": "SQL", "postId": "6672ff9b4f36148307da8842" },
-      { "name": "Kotlin", "postId": "66957f456a4b5183f526dece" }
+      { "name": "Kotlin", "postId": "66957f456a4b5183f526dece" },
+      { "name": "Rust", "postId": "66957d99c616639bfe57673c" }
     ],
     "technologies": [
       { "name": "Linux", "postId": "669083df8f4b3f7469b67a27" },
@@ -86,6 +87,18 @@
       {
         "title": "tim-ohagan.com (this site)",
         "projectId": "6673854c4ae6fd43d7f797ac"
+      },
+      {
+        "title": "Rust - Image Resizer",
+        "projectId": "669d26357ef426f9df24f11b"
+      },
+      {
+        "title": "Python - Pytest Automation Testing",
+        "projectId": "669ada6aefa1491eddde3973"
+      },
+      {
+        "title": "Java - Comment Service",
+        "projectId": "669a8e75155579ac4e495d2b"
       },
       {
         "title": "Python - Sentiment Analysis",
