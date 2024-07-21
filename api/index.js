@@ -56,7 +56,7 @@ async function resizeImage(buffer) {
 
   try {
     console.log('Attempting to resize image...');
-    const response = await axios.post('http://localhost:8080/resize', form, {
+    const response = await axios.post('https://image-resizer-latest.onrender.com/resize', form, {
       headers: form.getHeaders(),
       responseType: 'arraybuffer'
     });
