@@ -29,6 +29,7 @@ const allowedOrigins = [
   'https://java-thumbnail.onrender.com',
   "https://commentservice-0-0-1-snapshot.onrender.com",
   "https://github.com",
+  "https://image-resizer-latest.onrender.com/"
 ];
 
 const corsOptions = {
@@ -55,7 +56,7 @@ async function resizeImage(buffer) {
 
   try {
     console.log('Attempting to resize image...');
-    const response = await axios.post('https://image-resizer-latest.onrender.com/resize', form, {
+    const response = await axios.post('http://localhost:8080/resize', form, {
       headers: form.getHeaders(),
       responseType: 'arraybuffer'
     });
