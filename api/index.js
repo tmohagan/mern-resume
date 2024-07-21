@@ -54,20 +54,34 @@ async function resizeImage(buffer) {
   form.append('image', buffer, { filename: 'image.jpg' });
 
   try {
+    console.log('Attempting to resize image...');
     const response = await axios.post('https://image-resizer-latest.onrender.com/resize', form, {
       headers: form.getHeaders(),
       responseType: 'arraybuffer'
     });
+    console.log('Image resized successfully');
     return Buffer.from(response.data);
   } catch (error) {
-    console.error('Error resizing image:', error);
-    throw error;
+    console.error('Error resizing image:', error.message);
+    if (error.response) {
+      console.error('Response status:', error.response.status);
+      console.error('Response data:', error.response.data.toString());
+    }
+    // Instead of throwing the error, return the original buffer
+    console.log('Returning original image without resizing');
+    return buffer;
   }
 }
 
 async function uploadToS3(path, originalFilename, mimetype) {
   const fileBuffer = fs.readFileSync(path);
-  const resizedBuffer = await resizeImage(fileBuffer);
+  let resizedBuffer;
+  try {
+    resizedBuffer = await resizeImage(fileBuffer);
+  } catch (error) {
+    console.error('Error in resizeImage, using original buffer:', error);
+    resizedBuffer = fileBuffer;
+  }
 
   const client = new S3Client({
     region: 'us-east-2',
@@ -83,7 +97,7 @@ async function uploadToS3(path, originalFilename, mimetype) {
     Bucket: bucket,
     Body: resizedBuffer,
     Key: newFilename,
-    ContentType: 'image/jpeg',
+    ContentType: mimetype,
     ACL: 'public-read',
   }));
   return `https://${bucket}.s3.amazonaws.com/${newFilename}`;
