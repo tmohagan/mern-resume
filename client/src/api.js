@@ -6,4 +6,9 @@ const api = axios.create({
   withCredentials: true,
 });
 
+export const searchApi = axios.create({
+  baseURL: process.env.REACT_APP_GO_SEARCH_SERVICE_URL,
+  withCredentials: false,
+});
+
 export default api;

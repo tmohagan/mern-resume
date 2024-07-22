@@ -53,6 +53,7 @@ export default function Header() {
             <Link to="/posts_index" onClick={toggleMenu}>Skills</Link>
             <Link to="/projects_index" onClick={toggleMenu}>Projects</Link>
             <Link to="/contact" onClick={toggleMenu}>Contact</Link>
+            <Link to="/search" onClick={toggleMenu}>Search</Link>
             <Link to="/account" onClick={toggleMenu}>My Profile</Link>
             <Link to="/" onClick={logout}>Logout</Link>
           </>
@@ -61,6 +62,7 @@ export default function Header() {
             <Link to="/posts_index" onClick={toggleMenu}>Skills</Link>
             <Link to="/projects_index" onClick={toggleMenu}>Projects</Link>
             <Link to="/contact" onClick={toggleMenu}>Contact</Link>
+            <Link to="/search" onClick={toggleMenu}>Search</Link>
             <Link to="/login" onClick={toggleMenu}>Login</Link>
           </>
         )}

@@ -11,4 +11,4 @@ client/.env
 .vscode/
 
 # Misc
-temp.js
+temp

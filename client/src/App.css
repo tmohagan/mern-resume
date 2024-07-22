@@ -100,7 +100,7 @@ header nav a:hover {
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 783px) {
     header {
         flex-wrap: wrap;
     }
@@ -880,4 +880,95 @@ div.post p.summary {
 
 .comment-form button:hover {
   background-color: #0052a3;
+}
+
+/* Search results page */
+.search-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.search-page h1 {
+  margin-bottom: 20px;
+}
+
+.search-form {
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.search-input-wrapper {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.search-input-wrapper input[type="text"] {
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px;
+}
+
+.search-input-wrapper button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+.search-content-option {
+  position: absolute;
+  left: -20px; /* Moves the container to the left edge of the screen */
+  display: flex;
+  align-items: flex-start;
+  padding-left: 18px; /* Small padding between checkbox and left screen edge */
+}
+
+
+.search-content-option input[type="checkbox"] {
+  margin-top: 2px
+}
+
+.search-content-option label {
+  margin-left: 8px; /* Small padding between checkbox and label */
+  white-space: nowrap;
+}
+
+.search-result {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.search-result h2 {
+  margin-bottom: 10px;
+}
+
+.search-result p {
+  margin-bottom: 5px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  padding: 5px 10px;
+  background-color: #333;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 20px;
 }

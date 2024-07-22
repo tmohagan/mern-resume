@@ -4,6 +4,7 @@ import {Route, Routes} from "react-router-dom";
 import Layout from "./Layout";
 import IndexPage from "./pages/IndexPage";
 import {UserContextProvider} from "./UserContext";
+import SearchPage from "./pages/SearchPage";
 
 import CreatePost from "./pages/CreatePost";
 import PostsPage from "./pages/PostsPage";
@@ -29,6 +30,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<IndexPage />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route path="/posts_index" element={<PostsPage />} />
           <Route path="/create_post" element={<CreatePost />} />
           <Route path="/post/:id" element={<PostPage />} />
