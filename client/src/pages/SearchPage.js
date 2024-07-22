@@ -80,7 +80,7 @@ export default function SearchPage() {
             checked={searchContent}
             onChange={(e) => setSearchContent(e.target.checked)}
           />
-          <label htmlFor="search-content">Search all content (instead of just titles and summaries)</label>
+          <label htmlFor="search-content">Search through all content details</label>
         </div>
       </form>
 
