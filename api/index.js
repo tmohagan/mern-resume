@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require("mongoose");
+const compression = require('compression');
 const { ObjectId } = require('mongoose').Types;
 const User = require('./models/User');
 const Post = require('./models/Post');
@@ -18,6 +19,8 @@ const FormData = require('form-data');
 
 require('dotenv').config();
 const app = express();
+
+app.use(compression());
 
 const salt = bcrypt.genSaltSync(10);
 const secret = 'asdfe45we45w345wegw345werjktjwertkj';

@@ -1,28 +1,30 @@
 // App.js
 import './App.css';
-import {Route, Routes} from "react-router-dom";
+import React, { lazy, Suspense } from 'react';
+import { Route, Routes } from "react-router-dom";
 import Layout from "./Layout";
 import IndexPage from "./pages/IndexPage";
-import {UserContextProvider} from "./UserContext";
-import SearchPage from "./pages/SearchPage";
+import { UserContextProvider } from "./UserContext";
 
-import CreatePost from "./pages/CreatePost";
-import PostsPage from "./pages/PostsPage";
-import PostPage from "./pages/PostPage";
-import EditPost from "./pages/EditPost";
+// Lazy load components
+const SearchPage = lazy(() => import("./pages/SearchPage"));
+const CreatePost = lazy(() => import("./pages/CreatePost"));
+const PostsPage = lazy(() => import("./pages/PostsPage"));
+const PostPage = lazy(() => import("./pages/PostPage"));
+const EditPost = lazy(() => import("./pages/EditPost"));
+const CreateProject = lazy(() => import("./pages/CreateProject"));
+const ProjectsPage = lazy(() => import("./pages/ProjectsPage"));
+const ProjectPage = lazy(() => import("./pages/ProjectPage"));
+const EditProject = lazy(() => import("./pages/EditProject"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const AccountPage = lazy(() => import("./pages/AccountPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage"));
+const SentimentProject = lazy(() => import("./projects/SentimentProject"));
+const ThumbnailProject = lazy(() => import("./projects/ThumbnailProject"));
 
-import CreateProject from "./pages/CreateProject";
-import ProjectsPage from "./pages/ProjectsPage";
-import ProjectPage from "./pages/ProjectPage";
-import EditProject from "./pages/EditProject";
-
-import ContactPage from "./pages/ContactPage";
-import AccountPage from "./pages/AccountPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-
-import SentimentProject from "./projects/SentimentProject";
-import ThumbnailProject from "./projects/ThumbnailProject";
+// Loading fallback component
+const LoadingFallback = () => <div>Loading...</div>;
 
 function App() {
   return (
@@ -30,24 +32,129 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<IndexPage />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/posts_index" element={<PostsPage />} />
-          <Route path="/create_post" element={<CreatePost />} />
-          <Route path="/post/:id" element={<PostPage />} />
-          <Route path="/edit_post/:id" element={<EditPost />} />
+          <Route 
+            path="/search" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <SearchPage />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/posts_index" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <PostsPage />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/create_post" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <CreatePost />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/post/:id" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <PostPage />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/edit_post/:id" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <EditPost />
+              </Suspense>
+            } 
+          />
           
-          <Route path="/projects_index" element={<ProjectsPage />} />
-          <Route path="/create_project" element={<CreateProject />} />
-          <Route path="/project/:id" element={<ProjectPage />} />
-          <Route path="/edit_project/:id" element={<EditProject />} />
+          <Route 
+            path="/projects_index" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <ProjectsPage />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/create_project" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <CreateProject />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/project/:id" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <ProjectPage />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/edit_project/:id" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <EditProject />
+              </Suspense>
+            } 
+          />
 
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/account" element={<AccountPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route 
+            path="/contact" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <ContactPage />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/account" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <AccountPage />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/login" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <LoginPage />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/register" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <RegisterPage />
+              </Suspense>
+            } 
+          />
 
-          <Route path="/projects/sentiment" element={<SentimentProject />} />
-          <Route path="/projects/thumbnail" element={<ThumbnailProject />} />
+          <Route 
+            path="/projects/sentiment" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <SentimentProject />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/projects/thumbnail" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <ThumbnailProject />
+              </Suspense>
+            } 
+          />
         </Route>
       </Routes>
     </UserContextProvider>

@@ -1,8 +1,10 @@
+// Post.js
+import React from 'react';
 import { formatISO9075 } from "date-fns";
 import { Link } from "react-router-dom";
 import Image from "./Image.jsx";
 
-export default function Post({ _id, title, summary, cover, createdAt, author }) {
+const Post = React.memo(function Post({ _id, title, summary, cover, createdAt, author }) {
   return (
     <div className="post">
       <div className="image">
@@ -24,4 +26,6 @@ export default function Post({ _id, title, summary, cover, createdAt, author }) 
       </div>
     </div>
   );
-}
+});
+
+export default Post;
