@@ -28,7 +28,6 @@ function SentimentAnalyzer() {
       setSentiment(response.data.sentiment);
     } catch (error) {
       console.error('Error analyzing sentiment:', error);
-      // You might want to set an error state here and display it to the user
     }
   };
 
