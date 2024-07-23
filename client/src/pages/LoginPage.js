@@ -1,10 +1,12 @@
 // LoginPage.js
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import api from '../api';
 
 export default function LoginPage() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const { setUserInfo } = useContext(UserContext);
   const navigate = useNavigate();
 
