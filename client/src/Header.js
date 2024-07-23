@@ -24,6 +24,12 @@ export default function Header() {
     }
   }, [username, setUserInfo]);
 
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    await logout();
+    navigate('/');
+  };
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -44,10 +50,7 @@ export default function Header() {
             <Link to="/contact" onClick={toggleMenu}>Contact</Link>
             <Link to="/search" onClick={toggleMenu}>Search</Link>
             <Link to="/account" onClick={toggleMenu}>My Profile</Link>
-            <Link to="/" onClick={(e) => {
-              e.preventDefault();
-              logout();
-            }}>Logout</Link>
+            <Link to="/" onClick={handleLogout}>Logout</Link>
           </>
         ) : (
           <>
