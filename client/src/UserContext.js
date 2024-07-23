@@ -6,9 +6,11 @@ export const UserContext = createContext(null);
 
 export function UserContextProvider({children}) {
   const [userInfo, setUserInfo] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const refreshToken = async () => {
     try {
+      setIsLoading(true);
       // Try to get token from localStorage if it's not in the cookie
       const storedToken = localStorage.getItem('token');
       const response = await api.post('/refresh-token', { token: storedToken });
@@ -34,17 +36,25 @@ export function UserContextProvider({children}) {
     }
   };
 
-useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      refreshToken();
-      const intervalId = setInterval(refreshToken, 14 * 60 * 1000);
-      return () => clearInterval(intervalId);
-    }
+  useEffect(() => {
+    const checkAuth = async () => {
+      setIsLoading(true);
+      const token = localStorage.getItem('token');
+      if (token) {
+        await refreshToken();
+        const intervalId = setInterval(refreshToken, 14 * 60 * 1000);
+        return () => clearInterval(intervalId);
+      } else {
+        setUserInfo(null);
+      }
+      setIsLoading(false);
+    };
+  
+    checkAuth();
   }, []);
 
   return (
-    <UserContext.Provider value={{ userInfo, setUserInfo, refreshToken }}>
+    <UserContext.Provider value={{ userInfo, setUserInfo, refreshToken, logout, isLoading }}>
       {children}
     </UserContext.Provider>
   );
