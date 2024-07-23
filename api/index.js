@@ -1,3 +1,5 @@
+// index.js
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require("mongoose");
@@ -17,23 +19,15 @@ const nodemailer = require('nodemailer');
 const axios = require('axios');
 const FormData = require('form-data');
 
-require('dotenv').config();
 const app = express();
 
 app.use(compression());
 
-const salt = bcrypt.genSaltSync(10);
-const secret = 'asdfe45we45w345wegw345werjktjwertkj';
-const bucket = 'ohagan-mern-blog';
+const salt = bcrypt.genSaltSync(parseInt(process.env.BCRYPT_SALT_ROUNDS));
+const secret = process.env.JWT_SECRET;
+const bucket = process.env.S3_BUCKET_NAME;
 
-const allowedOrigins = [
-  'https://www.tim-ohagan.com',
-  'http://localhost:3000',
-  'https://java-thumbnail.onrender.com',
-  "https://commentservice-0-0-1-snapshot.onrender.com",
-  "https://github.com",
-  "https://image-resizer-latest.onrender.com/"
-];
+const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -59,7 +53,7 @@ async function resizeImage(buffer) {
 
   try {
     console.log('Attempting to resize image...');
-    const response = await axios.post('https://image-resizer-latest.onrender.com/resize', form, {
+    const response = await axios.post(process.env.IMAGE_RESIZER_URL, form, {
       headers: form.getHeaders(),
       responseType: 'arraybuffer',
       timeout: 60000 // 60 seconds timeout
@@ -72,7 +66,6 @@ async function resizeImage(buffer) {
       console.error('Response status:', error.response.status);
       console.error('Response data:', error.response.data.toString());
     }
-    // Instead of throwing the error, return the original buffer
     console.log('Returning original image without resizing');
     return buffer;
   }
@@ -89,7 +82,7 @@ async function uploadToS3(path, originalFilename, mimetype) {
   }
 
   const client = new S3Client({
-    region: 'us-east-2',
+    region: process.env.S3_REGION,
     credentials: {
       accessKeyId: process.env.S3_ACCESS_KEY,
       secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
