@@ -63,11 +63,11 @@
       { "name": "Full Stack JavaScript (MERN)", "postId": "6672fe174f36148307da8828" },
       { "name": "Java", "postId": "6672fd304f36148307da881a" },
       { "name": "Python", "postId": "6672ff524f36148307da8840" },
-      { "name": "Scala", "postId": "6672ff164f36148307da883e" },
       { "name": "Go", "postId": "668c70d0c553a42d6acc75a2" },
       { "name": "SQL", "postId": "6672ff9b4f36148307da8842" },
-      { "name": "Kotlin", "postId": "66957f456a4b5183f526dece" },
-      { "name": "Rust", "postId": "66957d99c616639bfe57673c" }
+      { "name": "Scala", "postId": "6672ff164f36148307da883e" },
+      { "name": "Rust", "postId": "66957d99c616639bfe57673c" },
+      { "name": "Kotlin", "postId": "66957f456a4b5183f526dece" }
     ],
     "technologies": [
       { "name": "Linux", "postId": "669083df8f4b3f7469b67a27" },
@@ -75,6 +75,7 @@
       { "name": "Maven", "postId": "668c714fc553a42d6acc75c6" },
       { "name": "Spring", "postId": "668c7120c553a42d6acc75b4" },
       { "name": "MongoDB", "postId": "6673015a4f36148307da884e" },
+      { "name": "GraphQL", "postId": "669f15ac95ec483843010f71" },
       { "name": "Test Automation", "postId": "66908492c2d3f1ce10c33220" },
       { "name": "Git", "postId": "668c7115c553a42d6acc75ae" },
       { "name": "CI/CD", "postId": "6689a7e8dce2349248e54a93" },
@@ -101,6 +102,10 @@
         "projectId": "669a8e75155579ac4e495d2b"
       },
       {
+        "title": "Go - Search Service",
+        "projectId": "669f1147a2fe3c7a201a8132"
+      },
+      {
         "title": "Python - Sentiment Analysis",
         "projectId": "667c4a5ab3f6a3d01abbaaad"
       },
@@ -109,7 +114,11 @@
         "projectId": "667cc51ad418a4bbdefa640d"
       },
       {
-        "title": "Go - Comment Service",
+        "title": "Scala - GraphQL API Gateway (in development)",
+        "projectId": "669f150395ec483843010f66"
+      },
+      {
+        "title": "Go - Comment Service (defunct)",
         "projectId": "668f3e056acfbd008896e5bf"
       }
     ],
