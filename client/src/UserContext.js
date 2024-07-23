@@ -9,12 +9,16 @@ export function UserContextProvider({children}) {
     const storedUser = localStorage.getItem('userInfo');
     return storedUser ? JSON.parse(storedUser) : null;
   });
+  const [profileChecked, setProfileChecked] = useState(false);
 
   const checkUserProfile = useCallback(async () => {
     if (userInfo?.username) {
       try {
         const response = await api.get('/profile');
-        setUserInfo(response.data);
+        setUserInfo(prevInfo => ({
+          ...prevInfo,
+          ...response.data
+        }));
         localStorage.setItem('userInfo', JSON.stringify(response.data));
       } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -22,18 +26,21 @@ export function UserContextProvider({children}) {
           localStorage.removeItem('userInfo');
         }
         console.error("Profile error:", error);
+      } finally {
+        setProfileChecked(true);
       }
     }
   }, [userInfo?.username]);
 
   useEffect(() => {
-    if (userInfo?.username && !userInfo?.name) {
+    if (userInfo?.username && !profileChecked) {
       checkUserProfile();
     }
-  }, [userInfo?.username, userInfo?.name, checkUserProfile]);
+  }, [userInfo?.username, profileChecked, checkUserProfile]);
 
   const logout = useCallback(() => {
     setUserInfo(null);
+    setProfileChecked(false);
     localStorage.removeItem('userInfo');
   }, []);
 
@@ -41,6 +48,7 @@ export function UserContextProvider({children}) {
     userInfo,
     setUserInfo: (info) => {
       setUserInfo(info);
+      setProfileChecked(false);
       if (info) {
         localStorage.setItem('userInfo', JSON.stringify(info));
       } else {

@@ -1,3 +1,4 @@
+// LoginPage.js
 import { useContext, useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { UserContext } from "../UserContext";
@@ -13,7 +14,12 @@ export default function LoginPage() {
     ev.preventDefault();
     try {
       const response = await api.post('/login', { username, password });
-      setUserInfo(response.data);
+      setUserInfo({
+        id: response.data.id,
+        username: response.data.username,
+        name: response.data.name, // Ensure the backend sends the name
+        // Include any other relevant user data
+      });
       setRedirect(true);
     } catch (error) {
       alert(error.response?.data?.message || "An error occurred. Please try again.");
