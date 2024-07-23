@@ -1,34 +1,27 @@
 // LoginPage.js
-import { useContext, useState } from "react";
-import { Navigate, Link } from "react-router-dom";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import api from '../api';
 
 export default function LoginPage() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [redirect, setRedirect] = useState(false);
   const { setUserInfo } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const login = async (ev) => {
     ev.preventDefault();
     try {
       const response = await api.post('/login', { username, password });
-      setUserInfo({
-        id: response.data.id,
-        username: response.data.username,
-        name: response.data.name, // Ensure the backend sends the name
-        // Include any other relevant user data
-      });
-      setRedirect(true);
+      setUserInfo(response.data.user);
+      // If the server didn't set a cookie, store the token in localStorage
+      if (!document.cookie.includes('token=')) {
+        localStorage.setItem('token', response.data.token);
+      }
+      navigate('/');
     } catch (error) {
-      alert(error.response?.data?.message || "An error occurred. Please try again.");
+      alert("Login failed");
     }
   };
-
-  if (redirect) {
-    return <Navigate to="/" />;
-  }
 
   return (
     <form className="login" onSubmit={login}>

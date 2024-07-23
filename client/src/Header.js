@@ -24,16 +24,7 @@ export default function Header() {
     }
   }, [username, setUserInfo]);
 
-  const logout = async () => {
-    try {
-      await api.post('/logout');
-      setUserInfo(null);
-      localStorage.removeItem("token");
-      navigate("/");
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
+  const { logout } = useContext(UserContext);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);

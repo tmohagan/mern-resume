@@ -139,20 +139,24 @@ app.post('/login', async (req, res) => {
     const passOk = bcrypt.compareSync(password, userDoc.password);
 
     if (passOk) {
-      jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
-        if (err) throw err;
+      const token = jwt.sign(
+        { username, id: userDoc._id },
+        process.env.JWT_SECRET,
+        { expiresIn: '15m' }
+      );
 
-        const cookieOptions = {
-          httpOnly: true,
-          sameSite: 'none',
-          secure: true,
-          maxAge: 24 * 60 * 60 * 1000,
-        };
+      const cookieOptions = {
+        httpOnly: true,
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 15 * 60 * 1000, // 15 minutes in milliseconds
+      };
 
-        res.cookie('token', token, cookieOptions).json({
-          id: userDoc._id,
-          username,
-        });
+      res.cookie('token', token, cookieOptions);
+      
+      res.json({
+        user: { id: userDoc._id, username: userDoc.username },
+        token: token // Send the token in the response body as well
       });
     } else {
       res.status(400).json({ error: 'Wrong credentials' });
@@ -161,6 +165,30 @@ app.post('/login', async (req, res) => {
     console.error('Error during login:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+});
+
+app.post('/refresh-token', (req, res) => {
+  const token = req.cookies.token || req.body.token; // Check both cookie and request body
+  
+  if (!token) {
+    return res.status(401).json({ error: 'No token provided' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+
+    const user = { id: decoded.id, username: decoded.username };
+    const newToken = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '15m' });
+
+    res.cookie('token', newToken, { 
+      httpOnly: true, 
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict'
+    });
+    res.json({ user, token: newToken });
+  });
 });
 
 app.get('/profile', (req, res) => {

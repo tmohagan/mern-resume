@@ -1,65 +1,45 @@
 // UserContext.js
-import { createContext, useState, useEffect, useCallback } from "react";
+import { createContext, useState, useEffect } from "react";
 import api from './api';
 
 export const UserContext = createContext(null);
 
 export function UserContextProvider({children}) {
-  const [userInfo, setUserInfo] = useState(() => {
-    const storedUser = localStorage.getItem('userInfo');
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
-  const [profileChecked, setProfileChecked] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
 
-  const checkUserProfile = useCallback(async () => {
-    if (userInfo?.username) {
-      try {
-        const response = await api.get('/profile');
-        setUserInfo(prevInfo => ({
-          ...prevInfo,
-          ...response.data
-        }));
-        localStorage.setItem('userInfo', JSON.stringify(response.data));
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          setUserInfo(null);
-          localStorage.removeItem('userInfo');
-        }
-        console.error("Profile error:", error);
-      } finally {
-        setProfileChecked(true);
+  const refreshToken = async () => {
+    try {
+      // Try to get token from localStorage if it's not in the cookie
+      const storedToken = localStorage.getItem('token');
+      const response = await api.post('/refresh-token', { token: storedToken });
+      setUserInfo(response.data.user);
+      // If the server didn't set a cookie, store the token in localStorage
+      if (!document.cookie.includes('token=')) {
+        localStorage.setItem('token', response.data.token);
       }
+    } catch (error) {
+      console.error("Token refresh failed:", error);
+      setUserInfo(null);
+      localStorage.removeItem('token');
     }
-  }, [userInfo?.username]);
-
-  useEffect(() => {
-    if (userInfo?.username && !profileChecked) {
-      checkUserProfile();
-    }
-  }, [userInfo?.username, profileChecked, checkUserProfile]);
-
-  const logout = useCallback(() => {
-    setUserInfo(null);
-    setProfileChecked(false);
-    localStorage.removeItem('userInfo');
-  }, []);
-
-  const value = {
-    userInfo,
-    setUserInfo: (info) => {
-      setUserInfo(info);
-      setProfileChecked(false);
-      if (info) {
-        localStorage.setItem('userInfo', JSON.stringify(info));
-      } else {
-        localStorage.removeItem('userInfo');
-      }
-    },
-    logout
   };
 
+  const logout = () => {
+    setUserInfo(null);
+    localStorage.removeItem('token');
+    // You might also want to call an API endpoint to invalidate the token on the server
+    api.post('/logout');
+  };
+  
+  useEffect(() => {
+    refreshToken();
+    const intervalId = setInterval(refreshToken, 14 * 60 * 1000); // every 14 minutes
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
-    <UserContext.Provider value={value}>
+    <UserContext.Provider value={{ userInfo, setUserInfo, refreshToken }}>
       {children}
     </UserContext.Provider>
   );
