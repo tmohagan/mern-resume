@@ -4,7 +4,7 @@ import { UserContext } from "./UserContext";
 import api from './api';
 
 export default function Header() {
-  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { userInfo, setUserInfo, logout } = useContext(UserContext);
   const username = userInfo?.username;
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,8 +23,6 @@ export default function Header() {
         });
     }
   }, [username, setUserInfo]);
-
-  const { logout } = useContext(UserContext);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -46,7 +44,10 @@ export default function Header() {
             <Link to="/contact" onClick={toggleMenu}>Contact</Link>
             <Link to="/search" onClick={toggleMenu}>Search</Link>
             <Link to="/account" onClick={toggleMenu}>My Profile</Link>
-            <Link to="/" onClick={logout}>Logout</Link>
+            <Link to="/" onClick={(e) => {
+              e.preventDefault();
+              logout();
+            }}>Logout</Link>
           </>
         ) : (
           <>

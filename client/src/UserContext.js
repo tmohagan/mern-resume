@@ -24,18 +24,23 @@ export function UserContextProvider({children}) {
     }
   };
 
-  const logout = () => {
-    setUserInfo(null);
-    localStorage.removeItem('token');
-    // You might also want to call an API endpoint to invalidate the token on the server
-    api.post('/logout');
+  const logout = async () => {
+    try {
+      await api.post('/logout');
+      setUserInfo(null);
+      localStorage.removeItem('token');
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
-  
-  useEffect(() => {
-    refreshToken();
-    const intervalId = setInterval(refreshToken, 14 * 60 * 1000); // every 14 minutes
 
-    return () => clearInterval(intervalId);
+useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      refreshToken();
+      const intervalId = setInterval(refreshToken, 14 * 60 * 1000);
+      return () => clearInterval(intervalId);
+    }
   }, []);
 
   return (
