@@ -72,7 +72,7 @@ const CommentSection = ({ parentID, parentType }) => {
 
   const handleSaveEdit = async () => {
     try {
-      const response = await commentApi.put(`/${editingComment.id}`, {
+      const response = await commentApi.put(`comments/${editingComment.id}`, {
         content: editedContent,
         userID: userInfo.id,
       });
@@ -94,7 +94,7 @@ const CommentSection = ({ parentID, parentType }) => {
   const handleDelete = async (commentId) => {
     if (window.confirm('Are you sure you want to delete this comment?')) {
       try {
-        const response = await commentApi.delete(`/${commentId}`, {
+        const response = await commentApi.delete(`comments/${commentId}`, {
           data: { userID: userInfo.id }
         });
         if (response.status === 200) {
