@@ -3,6 +3,7 @@ import {useNavigate, useParams, Link} from "react-router-dom";
 import {formatISO9075} from "date-fns";
 import {UserContext} from "../UserContext";
 import Image from "../Image.jsx";
+import CommentSection from "../CommentSection"; 
 import api from '../api';
 
 export default function ProjectPage() {

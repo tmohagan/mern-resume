@@ -3,13 +3,13 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import { formatISO9075 } from "date-fns";
 import { UserContext } from "../UserContext";
 import Image from "../Image.jsx";
-import CommentSection from "../CommentSection"; // Add this import
+import CommentSection from "../CommentSection"; 
 import api from '../api';
 
 export default function PostPage() {
   const [postInfo, setPostInfo] = useState(null);
   const { userInfo } = useContext(UserContext);
-  const { id } = useParams();  // id from url of post to fetch
+  const { id } = useParams(); 
   const navigate = useNavigate();
 
   useEffect(() => {
