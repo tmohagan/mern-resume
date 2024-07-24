@@ -4,7 +4,7 @@ import { UserContext } from "./UserContext";
 import { formatDistanceToNow } from 'date-fns';
 import { commentApi } from '../api';
 
-const CommentSection = ({ postID }) => {
+const CommentSection = ({ parentID, parentType }) => {
   const [comments, setComments] = useState(null);
   const [newComment, setNewComment] = useState('');
   const [editingComment, setEditingComment] = useState(null);
@@ -14,14 +14,19 @@ const CommentSection = ({ postID }) => {
 
   useEffect(() => {
     fetchComments();
-  }, [postID]);
+  }, [parentID, parentType]);
 
   
   const fetchComments = async () => {
     setIsLoading(true);
     try {
-      const response = await commentApi.get(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments/${postID}`);
-      setComments(response.data || []);
+      const response = await commentApi.get(`/${parentType}/${parentID}`);
+      if (response.status === 200) {
+        setComments(response.data || []);
+      } else {
+        console.error('Failed to fetch comments');
+        setComments([]);
+      }
     } catch (error) {
       console.error('Error fetching comments:', error);
       setComments([]);
@@ -37,14 +42,19 @@ const CommentSection = ({ postID }) => {
       return;
     }
     try {
-      await commentApi.post(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments`, {
-        postID: postID,
+      const response = await commentApi.post('', {
+        parentID: parentID,
+        parentType: parentType,
         userID: userInfo.id,
         username: userInfo.username,
         content: newComment
       });
-      setNewComment('');
-      fetchComments();
+      if (response.status === 201) {
+        setNewComment('');
+        fetchComments();
+      } else {
+        console.error('Failed to post comment');
+      }
     } catch (error) {
       console.error('Error posting comment:', error);
     }
@@ -62,27 +72,41 @@ const CommentSection = ({ postID }) => {
 
   const handleSaveEdit = async () => {
     try {
-      await commentApi.put(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments/${editingComment.id}`, {
+      const response = await commentApi.put(`/${editingComment.id}`, {
         content: editedContent,
         userID: userInfo.id,
       });
-      fetchComments();
-      setEditingComment(null);
-      setEditedContent('');
+      if (response.status === 200) {
+        fetchComments();
+        setEditingComment(null);
+        setEditedContent('');
+      } else {
+        console.error('Failed to update comment');
+      }
     } catch (error) {
       console.error('Error updating comment:', error);
+      if (error.response && error.response.status === 403) {
+        alert('You are not authorized to edit this comment.');
+      }
     }
   };
   
   const handleDelete = async (commentId) => {
     if (window.confirm('Are you sure you want to delete this comment?')) {
       try {
-        await commentApi.delete(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments/${commentId}`, {
+        const response = await commentApi.delete(`/${commentId}`, {
           data: { userID: userInfo.id }
         });
-        fetchComments();
+        if (response.status === 200) {
+          fetchComments();
+        } else {
+          console.error('Failed to delete comment');
+        }
       } catch (error) {
         console.error('Error deleting comment:', error);
+        if (error.response && error.response.status === 403) {
+          alert('You are not authorized to delete this comment.');
+        }
       }
     }
   };

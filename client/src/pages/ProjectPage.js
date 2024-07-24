@@ -70,6 +70,7 @@ export default function ProjectPage() {
   </div>
 )}
       <div className="content" dangerouslySetInnerHTML={{__html:projectInfo.content}} />
+      <CommentSection parentID={id} parentType="project" />
     </div>
   );
 }

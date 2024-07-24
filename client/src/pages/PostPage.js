@@ -74,7 +74,7 @@ export default function PostPage() {
         </div>
       )}
       <div className="content" dangerouslySetInnerHTML={{ __html: postInfo.content }} />
-      <CommentSection postID={id} />
+      <CommentSection parentID={id} parentType="post" />
     </div>
   );
 }
