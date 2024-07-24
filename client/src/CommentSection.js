@@ -20,7 +20,7 @@ const CommentSection = ({ parentID, parentType }) => {
   const fetchComments = async () => {
     setIsLoading(true);
     try {
-      const response = await commentApi.get(`/${parentType}/${parentID}`);
+      const response = await commentApi.get(`/comments/${parentType}/${parentID}`);
       if (response.status === 200) {
         setComments(response.data || []);
       } else {
@@ -42,7 +42,7 @@ const CommentSection = ({ parentID, parentType }) => {
       return;
     }
     try {
-      const response = await commentApi.post('', {
+      const response = await commentApi.post('/comments', {
         parentID: parentID,
         parentType: parentType,
         userID: userInfo.id,
