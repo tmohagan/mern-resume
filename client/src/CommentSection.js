@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import { formatDistanceToNow } from 'date-fns';
+import { commentApi } from '../api';
 
 const CommentSection = ({ postID }) => {
   const [comments, setComments] = useState(null);
@@ -19,17 +20,8 @@ const CommentSection = ({ postID }) => {
   const fetchComments = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments/${postID}`);
-      if (response.ok) {
-        const data = await response.json();
-        setComments(data || []);
-      } else {
-        console.error('Failed to fetch comments');
-        const text = await response.text();
-        console.error('Response status:', response.status);
-        console.error('Response text:', text);
-        setComments([]);
-      }
+      const response = await commentApi.get(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments/${postID}`);
+      setComments(response.data || []);
     } catch (error) {
       console.error('Error fetching comments:', error);
       setComments([]);
@@ -45,24 +37,14 @@ const CommentSection = ({ postID }) => {
       return;
     }
     try {
-      const response = await fetch(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          postID: postID,
-          userID: userInfo.id,
-          username: userInfo.username,
-          content: newComment
-        }),
+      await commentApi.post(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments`, {
+        postID: postID,
+        userID: userInfo.id,
+        username: userInfo.username,
+        content: newComment
       });
-      if (response.ok) {
-        setNewComment('');
-        fetchComments();
-      } else {
-        console.error('Failed to post comment');
-      }
+      setNewComment('');
+      fetchComments();
     } catch (error) {
       console.error('Error posting comment:', error);
     }
@@ -80,23 +62,13 @@ const CommentSection = ({ postID }) => {
 
   const handleSaveEdit = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments/${editingComment.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          content: editedContent,
-          userID: userInfo.id,
-        }),
+      await commentApi.put(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments/${editingComment.id}`, {
+        content: editedContent,
+        userID: userInfo.id,
       });
-      if (response.ok) {
-        fetchComments();
-        setEditingComment(null);
-        setEditedContent('');
-      } else {
-        console.error('Failed to update comment');
-      }
+      fetchComments();
+      setEditingComment(null);
+      setEditedContent('');
     } catch (error) {
       console.error('Error updating comment:', error);
     }
@@ -105,20 +77,10 @@ const CommentSection = ({ postID }) => {
   const handleDelete = async (commentId) => {
     if (window.confirm('Are you sure you want to delete this comment?')) {
       try {
-        const response = await fetch(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments/${commentId}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userID: userInfo.id,
-          }),
+        await commentApi.delete(`${process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL}/comments/${commentId}`, {
+          data: { userID: userInfo.id }
         });
-        if (response.ok) {
-          fetchComments();
-        } else {
-          console.error('Failed to delete comment');
-        }
+        fetchComments();
       } catch (error) {
         console.error('Error deleting comment:', error);
       }

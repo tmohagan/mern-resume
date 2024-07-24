@@ -1,3 +1,4 @@
+// api.js
 import axios from 'axios';
 
 const api = axios.create({
@@ -7,6 +8,11 @@ const api = axios.create({
 
 export const searchApi = axios.create({
   baseURL: process.env.REACT_APP_GO_SEARCH_SERVICE_URL,
+  withCredentials: false,
+});
+
+export const commentApi = axios.create({
+  baseURL: process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL,
   withCredentials: false,
 });
 
