@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import { formatDistanceToNow } from 'date-fns';
-import { commentApi } from '../api';
+import { commentApi } from './api';
 
 const CommentSection = ({ parentID, parentType }) => {
   const [comments, setComments] = useState(null);
