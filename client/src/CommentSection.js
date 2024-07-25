@@ -35,6 +35,19 @@ const CommentSection = ({ parentID, parentType }) => {
     }
   };
 
+  const getEmoji = (sentiment) => {
+    switch (sentiment) {
+      case 'positive':
+        return '😄'; // Smiling face with open mouth
+      case 'negative':
+        return '😔'; // Pensive face
+      case 'neutral':
+        return '😐'; // Neutral face
+      default:
+        return '❓'; // Question mark
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!userInfo) {
@@ -125,7 +138,9 @@ const CommentSection = ({ parentID, parentType }) => {
         comments.map((comment) => (
           <div key={comment.id} className="comment">
             <div className="comment-header">
-              <span className="comment-author">{comment.username}</span>
+              <span className="comment-author">
+                {comment.username} {getEmoji(comment.sentiment)}
+              </span>
               <span className="comment-date">
                 {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
               </span>
