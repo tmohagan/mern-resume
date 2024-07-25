@@ -47,6 +47,23 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('MongoDB connected');
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    process.exit(1);
+  }
+};
+
+if (process.env.NODE_ENV !== 'test') {
+  connectDB();
+}
+
 async function resizeImage(buffer) {
   const form = new FormData();
   form.append('image', buffer, { filename: 'image.jpg' });
@@ -107,8 +124,6 @@ app.get('/test', (req,res) => {
 );
 
 app.post('/register', async (req, res) => {
-  mongoose.connect(process.env.MONGO_URL);
-
   const { username, password, confirmPassword } = req.body;
   
   if (password !== confirmPassword) {
@@ -128,7 +143,6 @@ app.post('/register', async (req, res) => {
 
 app.post('/login', async (req, res) => {
   try {
-    await mongoose.connect(process.env.MONGO_URL); 
     const { username, password } = req.body;
     const userDoc = await User.findOne({ username });
 
@@ -206,7 +220,6 @@ app.get('/profile', (req, res) => {
 });
 
 app.get('/user/:id', async (req, res) => {
-  mongoose.connect(process.env.MONGO_URL);
   const {id} = req.params;
   const userDoc = await User.findById(id);
   res.json(userDoc);
@@ -215,8 +228,6 @@ app.get('/user/:id', async (req, res) => {
 
 app.put('/user', async (req, res) => {
   try {
-    mongoose.connect(process.env.MONGO_URL);
-
     const { token } = req.cookies;
 
     jwt.verify(token, secret, {}, async (err, info) => {
@@ -306,8 +317,6 @@ app.post('/contact', express.json(), async (req, res) => {
 });
 
 app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
-  mongoose.connect(process.env.MONGO_URL);
-
   let imageUrl = null;
 
   if (req.file) {
@@ -334,7 +343,6 @@ app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
 });
 
 app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
-  mongoose.connect(process.env.MONGO_URL);
   let imageUrl = null;
   if (req.file) {
     const { originalname, path, mimetype } = req.file;
@@ -377,7 +385,6 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
 });
 
 app.get('/post', async (req, res) => {
-  mongoose.connect(process.env.MONGO_URL);
   const { page = 1, limit = 10 } = req.query;
   const skip = (page - 1) * limit;
 
@@ -394,7 +401,6 @@ app.get('/post', async (req, res) => {
 });
 
 app.get('/post/:id', async (req, res) => {
-  mongoose.connect(process.env.MONGO_URL);
   const {id} = req.params;
   try {
     const postDoc = await Post.findById(id)
@@ -414,7 +420,6 @@ app.get('/post/:id', async (req, res) => {
 
 app.delete('/post/:id', async (req, res) => {
   try {
-    mongoose.connect(process.env.MONGO_URL);
     const { id } = req.params;
 
     const postDoc = await Post.findById(id);
@@ -460,8 +465,6 @@ app.delete('/post/:id', async (req, res) => {
 });
 
 app.post('/project', uploadMiddleware.single('file'), async (req,res) => {
-  mongoose.connect(process.env.MONGO_URL);
-
   let imageUrl = null;
 
   if (req.file) {
@@ -489,7 +492,6 @@ app.post('/project', uploadMiddleware.single('file'), async (req,res) => {
 });
 
 app.put('/project', uploadMiddleware.single('file'), async (req, res) => {
-  mongoose.connect(process.env.MONGO_URL);
   let imageUrl = null;
   if (req.file) {
     const {originalname, path, mimetype} = req.file;
@@ -524,7 +526,6 @@ app.put('/project', uploadMiddleware.single('file'), async (req, res) => {
 });
 
 app.get('/project', async (req, res) => {
-  mongoose.connect(process.env.MONGO_URL);
   const { page = 1, limit = 10 } = req.query;
   const skip = (page - 1) * limit;
 
@@ -541,7 +542,6 @@ app.get('/project', async (req, res) => {
 });
 
 app.get('/project/:id', async (req, res) => {
-  mongoose.connect(process.env.MONGO_URL);
   const {id} = req.params;
   try {
     const projectDoc = await Project.findById(id).populate('author', ['username']);
@@ -560,7 +560,6 @@ app.get('/project/:id', async (req, res) => {
 
 app.delete('/project/:id', async (req, res) => {
   try {
-    mongoose.connect(process.env.MONGO_URL);
     const { id } = req.params;
 
     const projectDoc = await Project.findById(id);
@@ -609,7 +608,9 @@ app.delete('/project/:id', async (req, res) => {
 });
 
 if (process.env.API_PORT) {
-  app.listen(process.env.API_PORT);
+  app.listen(process.env.API_PORT, () => {
+    console.log(`Server running on port ${process.env.API_PORT}`);
+  });
 }
 
 module.exports = app;
