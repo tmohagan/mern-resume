@@ -1,5 +1,3 @@
-// CommentSection.js
-
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
@@ -15,26 +13,38 @@ const CommentSection = ({ parentID, parentType }) => {
   const { userInfo } = useContext(UserContext);
 
   useEffect(() => {
-    fetchComments();
+    if (isValidObjectId(parentID)) {
+      fetchComments();
+    } else {
+      console.error('Invalid parentID');
+      setComments([]);
+      setIsLoading(false);
+    }
   }, [parentID, parentType]);
+
+  const isValidObjectId = (id) => {
+    if(id == null) return false;
+    if(typeof id !== 'string') return false;
+    return /^[0-9a-fA-F]{24}$/.test(id);
+  };
 
   const getEmoji = (sentiment) => {
     switch (sentiment) {
       case 'positive':
-        return '😄'; // Smiling face with open mouth
+        return '😄';
       case 'negative':
-        return '😔'; // Pensive face
+        return '😔';
       case 'neutral':
-        return '😐'; // Neutral face
+        return '😐';
       default:
-        return '❓'; // Question mark
+        return '❓';
     }
   };
 
   const fetchComments = async () => {
     setIsLoading(true);
     try {
-      const response = await commentApi.get(`/comments/${parentType}/${parentID}`);
+      const response = await commentApi.get(`/api/comments/${parentType}/${parentID}`);
       if (response.status === 200) {
         setComments(response.data || []);
       } else {
@@ -55,14 +65,17 @@ const CommentSection = ({ parentID, parentType }) => {
       alert('You must be logged in to comment.');
       return;
     }
+    if (!isValidObjectId(parentID)) {
+      console.error('Invalid parentID');
+      return;
+    }
     try {
       const commentData = {
         userID: userInfo.id,
         username: userInfo.username,
         content: newComment
       };
-      console.log('Sending comment data:', commentData);
-      const response = await commentApi.post(`/comments/${parentType}/${parentID}`, commentData);
+      const response = await commentApi.post(`/api/comments/${parentType}/${parentID}`, commentData);
       if (response.status === 201) {
         setNewComment('');
         fetchComments();
@@ -88,8 +101,12 @@ const CommentSection = ({ parentID, parentType }) => {
   };
 
   const handleSaveEdit = async () => {
+    if (!isValidObjectId(editingComment.id)) {
+      console.error('Invalid comment ID');
+      return;
+    }
     try {
-      const response = await commentApi.put(`/comments/${parentType}/${editingComment.id}`, {
+      const response = await commentApi.put(`/api/comments/${parentType}/${editingComment.id}`, {
         content: editedContent,
         userID: userInfo.id,
       });
@@ -109,12 +126,16 @@ const CommentSection = ({ parentID, parentType }) => {
   };
   
   const handleDelete = async (commentId) => {
+    if (!isValidObjectId(commentId)) {
+      console.error('Invalid comment ID');
+      return;
+    }
     if (window.confirm('Are you sure you want to delete this comment?')) {
       try {
-        const response = await commentApi.delete(`/comments/${parentType}/${commentId}`, {
-          data: { userID: userInfo.id }
+        const response = await commentApi.delete(`/api/comments/${parentType}/${commentId}`, {
+          headers: { 'User-ID': userInfo.id }
         });
-        if (response.status === 200) {
+        if (response.status === 204) {
           fetchComments();
         } else {
           console.error('Failed to delete comment');
