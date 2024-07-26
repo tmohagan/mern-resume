@@ -1,3 +1,5 @@
+// CommentSection.js
+
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
@@ -5,7 +7,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { commentApi } from './api';
 
 const CommentSection = ({ parentID, parentType }) => {
-  const [comments, setComments] = useState(null);
+  const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [editingComment, setEditingComment] = useState(null);
   const [editedContent, setEditedContent] = useState('');
@@ -16,7 +18,19 @@ const CommentSection = ({ parentID, parentType }) => {
     fetchComments();
   }, [parentID, parentType]);
 
-  
+  const getEmoji = (sentiment) => {
+    switch (sentiment) {
+      case 'positive':
+        return '😄'; // Smiling face with open mouth
+      case 'negative':
+        return '😔'; // Pensive face
+      case 'neutral':
+        return '😐'; // Neutral face
+      default:
+        return '❓'; // Question mark
+    }
+  };
+
   const fetchComments = async () => {
     setIsLoading(true);
     try {
@@ -35,19 +49,6 @@ const CommentSection = ({ parentID, parentType }) => {
     }
   };
 
-  const getEmoji = (sentiment) => {
-    switch (sentiment) {
-      case 'positive':
-        return '😄'; // Smiling face with open mouth
-      case 'negative':
-        return '😔'; // Pensive face
-      case 'neutral':
-        return '😐'; // Neutral face
-      default:
-        return '❓'; // Question mark
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!userInfo) {
@@ -55,21 +56,24 @@ const CommentSection = ({ parentID, parentType }) => {
       return;
     }
     try {
-      const response = await commentApi.post('/comments', {
-        parentID: parentID,
-        parentType: parentType,
+      const commentData = {
         userID: userInfo.id,
         username: userInfo.username,
         content: newComment
-      });
+      };
+      console.log('Sending comment data:', commentData);
+      const response = await commentApi.post(`/comments/${parentType}/${parentID}`, commentData);
       if (response.status === 201) {
         setNewComment('');
         fetchComments();
       } else {
-        console.error('Failed to post comment');
+        console.error('Failed to post comment', response);
       }
     } catch (error) {
       console.error('Error posting comment:', error);
+      if (error.response) {
+        console.error('Error response:', error.response.data);
+      }
     }
   };
 
@@ -85,7 +89,7 @@ const CommentSection = ({ parentID, parentType }) => {
 
   const handleSaveEdit = async () => {
     try {
-      const response = await commentApi.put(`comments/${editingComment.id}`, {
+      const response = await commentApi.put(`/comments/${parentType}/${editingComment.id}`, {
         content: editedContent,
         userID: userInfo.id,
       });
@@ -107,7 +111,7 @@ const CommentSection = ({ parentID, parentType }) => {
   const handleDelete = async (commentId) => {
     if (window.confirm('Are you sure you want to delete this comment?')) {
       try {
-        const response = await commentApi.delete(`comments/${commentId}`, {
+        const response = await commentApi.delete(`/comments/${parentType}/${commentId}`, {
           data: { userID: userInfo.id }
         });
         if (response.status === 200) {
@@ -134,12 +138,12 @@ const CommentSection = ({ parentID, parentType }) => {
       {!userInfo && <Link to="/login">Please log in/register to leave a comment.</Link>}
       {isLoading ? (
         <p>Loading comments...</p>
-      ) : comments && comments.length > 0 ? (
+      ) : comments.length > 0 ? (
         comments.map((comment) => (
           <div key={comment.id} className="comment">
             <div className="comment-header">
               <span className="comment-author">
-                {comment.username} {getEmoji(comment.sentiment)}
+                {comment.username} {' '}{getEmoji(comment.sentiment)}
               </span>
               <span className="comment-date">
                 {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}

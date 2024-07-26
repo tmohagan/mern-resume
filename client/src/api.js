@@ -24,7 +24,7 @@ export const searchApi = axios.create({
 
 export const commentApi = axios.create({
   baseURL: process.env.REACT_APP_JAVA_COMMENT_SERVICE_URL,
-  withCredentials: true,
+  withCredentials: false,
 });
 
 export default api;
