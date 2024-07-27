@@ -6,7 +6,6 @@ import Layout from "./Layout";
 import IndexPage from "./pages/IndexPage";
 import { UserContextProvider } from "./UserContext";
 
-// Lazy load components
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 const CreatePost = lazy(() => import("./pages/CreatePost"));
 const PostsPage = lazy(() => import("./pages/PostsPage"));
@@ -20,10 +19,7 @@ const ContactPage = lazy(() => import("./pages/ContactPage"));
 const AccountPage = lazy(() => import("./pages/AccountPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
-const SentimentProject = lazy(() => import("./projects/SentimentProject"));
-const ThumbnailProject = lazy(() => import("./projects/ThumbnailProject"));
 
-// Loading fallback component
 const LoadingFallback = () => <div>Loading...</div>;
 
 function App() {
@@ -135,23 +131,6 @@ function App() {
             element={
               <Suspense fallback={<LoadingFallback />}>
                 <RegisterPage />
-              </Suspense>
-            } 
-          />
-
-          <Route 
-            path="/projects/sentiment" 
-            element={
-              <Suspense fallback={<LoadingFallback />}>
-                <SentimentProject />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/projects/thumbnail" 
-            element={
-              <Suspense fallback={<LoadingFallback />}>
-                <ThumbnailProject />
               </Suspense>
             } 
           />
