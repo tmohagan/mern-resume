@@ -656,33 +656,6 @@ div.post p.summary {
     border-bottom-color: #004499;
 }
 
-.demo-row {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .demo-btn {
-    background-color: #333;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    color: #fff;
-    padding: 15px 30px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s;
-  }
-  
-  .demo-btn:hover {
-    background-color: #555;
-  }
-  
-  .demo-btn svg {
-    width: 20px;
-    height: 20px;
-  }
-
   .pagination {
     display: flex;
     justify-content: center;

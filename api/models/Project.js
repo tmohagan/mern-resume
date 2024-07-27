@@ -6,7 +6,6 @@ const ProjectSchema = new Schema({
   summary:String,
   content:String,
   cover:String,
-  demo:String,
   author:{type:Schema.Types.ObjectId, ref:'User'},
 }, {
   timestamps: true,

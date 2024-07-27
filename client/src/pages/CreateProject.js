@@ -9,7 +9,6 @@ export default function CreateProject() {
   const [summary,setSummary] = useState('');
   const [content,setContent] = useState('');
   const [files, setFiles] = useState('');
-  const [demo, setDemo] = useState('');
   const [redirect, setRedirect] = useState(false);
   
   async function createNewProject(ev) {
@@ -20,7 +19,6 @@ export default function CreateProject() {
       data.set('title', title);
       data.set('summary', summary);
       data.set('content', content);
-      data.set('demo', demo);
       if (files.length > 0) {
         data.set('file', files[0]);
       }
@@ -48,12 +46,6 @@ export default function CreateProject() {
              onChange={ev => setSummary(ev.target.value)} />
       <input type="file"
              onChange={ev => setFiles(ev.target.files)} />
-      <input
-            type="text"
-            placeholder="Demo"
-            value={demo}
-            onChange={(ev) => setDemo(ev.target.value)}
-    />
       <Editor value={content} onChange={setContent} />
       <button style={{marginTop:'5px'}}>Create Project</button>
     </form>

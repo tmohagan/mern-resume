@@ -478,13 +478,12 @@ app.post('/project', uploadMiddleware.single('file'), async (req,res) => {
     if (err) {
       throw err;
     }
-    const {title,summary,content, demo} = req.body;
+    const {title,summary,content} = req.body;
     const projectDoc = await Project.create({
       title,
       summary,
       content,
       cover:imageUrl,
-      demo,
       author:info.id,
     });
     res.json(projectDoc);
@@ -501,7 +500,7 @@ app.put('/project', uploadMiddleware.single('file'), async (req, res) => {
   const {token} = req.cookies;
   jwt.verify(token, secret, {}, async (err, info) => {
     if (err) throw err;
-    const {id, title, summary, content, demo} = req.body;
+    const {id, title, summary, content} = req.body;
     const projectDoc = await Project.findById(id);
     if (!projectDoc) {
       return res.status(404).json({ error: 'Project not found' });
@@ -516,7 +515,6 @@ app.put('/project', uploadMiddleware.single('file'), async (req, res) => {
       summary,
       content,
       cover: imageUrl ? imageUrl : projectDoc.cover,
-      demo,
     };
 
     const updatedProject = await Project.findByIdAndUpdate(id, updateData, { new: true });
