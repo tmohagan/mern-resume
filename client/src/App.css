@@ -948,3 +948,45 @@ div.post p.summary {
   color: red;
   margin-bottom: 20px;
 }
+
+/* ReactQuill editor styles */
+.ql-toolbar.ql-snow {
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  padding: 8px;
+  width: 100%;
+}
+
+.ql-container.ql-snow {
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.ql-editor {
+  min-height: 200px;
+  font-size: 16px;
+}
+
+/* Remove extra spacing */
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+  border-top: 0px;
+}
+
+/* Style the toolbar buttons */
+.ql-snow .ql-toolbar button,
+.ql-snow.ql-toolbar button {
+  width: auto;
+  height: auto;
+  padding: 5px;
+}
+
+/* Adjust icon sizes */
+.ql-snow .ql-stroke {
+  stroke-width: 1.5px;
+}
+
+/* Remove the extra input field */
+.ql-container > input[type="text"] {
+  display: none;
+}
