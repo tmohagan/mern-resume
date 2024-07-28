@@ -8,7 +8,7 @@
       "github": "https://github.com/tmohagan"
     },
     "summary": "Innovative and detail-oriented software engineering professional with light full-stack experience in developing ReactJS UI components and API components built on a Spring framework. Well-versed in Scrum and Agile methodology, building full-scale applications in the healthcare and accounting spaces. Strategic professional adept at planning projects and identifying ways to improve.",
-    "summary2": "Alongside my work at Walmart Global Tech, I continuously expand my full-stack expertise through personal projects, gaining deeper insights into the entire software development process. While this site is primarily built using the MERN stack, I actively experiment with diverse languages and technologies optimized for specific tasks. I achieve this by developing and integrating various microservices into the site, each crafted with the language best suited for its unique function.",
+    "summary2": "Alongside my work at Walmart Global Tech, I continuously expand my full-stack expertise through personal projects, gaining deeper insights into the entire software development process. While this site is primarily built using the MERN stack, I actively experiment with diverse languages and technologies optimized for specific tasks. I achieve this by developing and integrating various micro services into the site, each crafted with the language best suited for its unique function.",
     "experience": [
       {
         "company": "WALMART GLOBAL TECH",
@@ -48,7 +48,7 @@
         "dates": "2006-2023",
         "tasks": [
           {
-            "title": "Worked in Retail Managment and Whosale Industry",
+            "title": "Worked in Retail Managment and Wholesale Industry",
             "details": [
               "Progressive career advancement within the retail industry, culminating in leadership roles as Assistant Store Manager and Department Manager at Walmart (2018-2023).",
               "Consistently exceeded performance expectations, driving sales growth and fostering positive customer experiences.",
@@ -86,12 +86,8 @@
     ],
     "projects": [
       {
-        "title": "tim-ohagan.com (this site)",
+        "title": "Fullstack MERN - tim-ohagan.com (this site)",
         "projectId": "6673854c4ae6fd43d7f797ac"
-      },
-      {
-        "title": "Rust - Image Resizer",
-        "projectId": "669d26357ef426f9df24f11b"
       },
       {
         "title": "Python - Pytest Automation Testing",
@@ -102,24 +98,20 @@
         "projectId": "669a8e75155579ac4e495d2b"
       },
       {
-        "title": "Go - Search Service",
-        "projectId": "669f1147a2fe3c7a201a8132"
-      },
-      {
         "title": "Python - Sentiment Analysis",
         "projectId": "667c4a5ab3f6a3d01abbaaad"
       },
       {
-        "title": "Java - Image Resizer",
-        "projectId": "667cc51ad418a4bbdefa640d"
+        "title": "Rust - Image Resizer",
+        "projectId": "669d26357ef426f9df24f11b"
+      },
+      {
+        "title": "Go - Search Service",
+        "projectId": "669f1147a2fe3c7a201a8132"
       },
       {
         "title": "Scala - GraphQL API Gateway (in development)",
         "projectId": "669f150395ec483843010f66"
-      },
-      {
-        "title": "Go - Comment Service (defunct)",
-        "projectId": "668f3e056acfbd008896e5bf"
       }
     ],
     "education": [
